@@ -317,7 +317,7 @@ jobs:
     name: Telegram Notification
     runs-on: ubuntu-latest
     needs: [ci, security, cd, tag-stable]
-    if: always() # Pastikan notifikasi selalu berjalan meskipun job sebelumnya gagal
+    if: always()
 
     steps:
       - name: Notify Success

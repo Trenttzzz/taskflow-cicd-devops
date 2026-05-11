@@ -322,16 +322,22 @@ jobs:
     steps:
       - name: Notify Success
         if: ${{ !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        env:
+          RAW_COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Pembaruan kode' }}
         run: |
           TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
+          COMMIT_MSG=$(echo "$RAW_COMMIT_MSG" | head -n 1 | sed 's/"/\\"/g')
           curl -s -X POST -H 'Content-Type: application/json' \
-            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "✅ *TaskFlow Pipeline SUCCESS*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "✅ *TaskFlow Pipeline SUCCESS*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Pesan:* '"$COMMIT_MSG"'\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
             https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
 
       - name: Notify Failure
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        env:
+          RAW_COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Pembaruan kode' }}
         run: |
           TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
+          COMMIT_MSG=$(echo "$RAW_COMMIT_MSG" | head -n 1 | sed 's/"/\\"/g')
           curl -s -X POST -H 'Content-Type: application/json' \
-            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "❌ *TaskFlow Pipeline FAILED*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "❌ *TaskFlow Pipeline FAILED*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Pesan:* '"$COMMIT_MSG"'\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
             https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage

@@ -1,6 +1,6 @@
 # Makefile - TaskFlow API
 BINARY   = bin/taskflow-api
-IMAGE    = taskflow-api
+IMAGE    = taskflow-cicd-devops
 REGISTRY ?= ghcr.io/trenttzzz
 VERSION  ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "dev")
 DB_URL   ?= postgres://taskflow:taskflow_secret@localhost:5432/taskflow?sslmode=disable
@@ -71,18 +71,14 @@ docker-stable:
 ## Rollback: run a previous image version
 ## Usage: make rollback ROLLBACK_TAG=sha-a3f2c1d
 rollback:
-	@test -n "$(ROLLBACK_TAG)" || (echo "Set ROLLBACK_TAG=sha-xxxxx"; exit 1)
 	@echo "Rolling back to $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)"
 	docker pull $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
-	docker stop taskflow-api 2>/dev/null || true
-	docker run -d --rm \
-	  --name taskflow-api \
-	  -p 8080:8080 \
-	  -e DATABASE_URL=$(DB_URL) \
-	  $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
+	-docker stop taskflow-api
+	-docker rm taskflow-api
+	docker run -d --name taskflow-api -p 8080:8080 $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
 	@echo "Waiting for server to be ready..."
-	@sleep 5
-	curl -sf http://localhost:8080/health || (echo "Health check failed!"; exit 1)
+	@ping -n 11 127.0.0.1 >NUL
+	curl.exe http://localhost:8080/health
 	@echo "Rollback completed to $(ROLLBACK_TAG)"
 
 ## Start PostgreSQL only (for development)

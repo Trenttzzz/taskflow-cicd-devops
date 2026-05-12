@@ -75,7 +75,7 @@ rollback:
 	docker pull $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
 	-docker stop taskflow-api
 	-docker rm taskflow-api
-	docker run -d --name taskflow-api -p 8080:8080 $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
+	docker run -d --name taskflow-api -p 8080:8080 --link taskflow-db:db -e DATABASE_URL=postgres://taskflow:taskflow_secret@db:5432/taskflow?sslmode=disable $(REGISTRY)/$(IMAGE):$(ROLLBACK_TAG)
 	@echo "Waiting for server to be ready..."
 	@ping -n 11 127.0.0.1 >NUL
 	curl.exe http://localhost:8080/health

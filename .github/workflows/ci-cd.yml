@@ -151,7 +151,7 @@ jobs:
           echo "Security scan found blocking findings. Check uploaded reports."
           exit 1
 
-  # ── CD: Build, Push, & Smoke Test (Post-Deployment Check) ────────────────────
+  # ── CD: Build & Push Docker image ───────────────────────────────────────────
   cd:
     name: CD - Docker Build & Push
     runs-on: ubuntu-latest
@@ -160,20 +160,9 @@ jobs:
     permissions:
       contents: read
       packages: write
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: taskflow
-          POSTGRES_PASSWORD: taskflow_secret
-          POSTGRES_DB: taskflow
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
+    outputs:
+      image_name: ${{ steps.vars.outputs.image_name }}
+      sha_short: ${{ steps.vars.outputs.sha_short }}
 
     steps:
       - name: Checkout code
@@ -208,13 +197,45 @@ jobs:
       - name: Output image tag
         run: echo "Image pushed to ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}"
 
-      # ── Skenario 4: Deployment Smoke Test Lokal via Container ────────────────
+  # ── CD: Smoke Test (Post-Deployment Check) ───────────────────────────────────
+  smoke-test:
+    name: CD - Smoke Test
+    runs-on: ubuntu-latest
+    needs: cd
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      packages: read
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: taskflow
+          POSTGRES_PASSWORD: taskflow_secret
+          POSTGRES_DB: taskflow
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull and run image for Smoke Test
         env:
           DATABASE_URL: postgres://taskflow:taskflow_secret@localhost:5432/taskflow?sslmode=disable
+          IMAGE: ${{ env.REGISTRY }}/${{ needs.cd.outputs.image_name }}:sha-${{ needs.cd.outputs.sha_short }}
         run: |
           echo "Pulling image..."
-          docker pull ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}
+          docker pull "$IMAGE"
           echo "Starting container..."
           # Run WITHOUT --rm so we can inspect logs if it crashes
           docker run -d \
@@ -222,7 +243,7 @@ jobs:
             --network host \
             -e DATABASE_URL="$DATABASE_URL" \
             -e PORT=8080 \
-            ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}
+            "$IMAGE"
           echo "Container started, waiting 2s..."
           sleep 2
           echo "Container status:"
@@ -239,14 +260,14 @@ jobs:
               exit 0
             fi
             echo "Attempt $i/30 - not ready yet..."
-            
+
             # Check if container is still running
             if ! docker ps | grep -q taskflow-api; then
               echo "Container crashed! Logs:"
               docker logs taskflow-api 2>&1 | tail -30 || true
               exit 1
             fi
-            
+
             docker logs taskflow-api --tail 3 2>&1 || true
             sleep 1
           done
@@ -277,12 +298,12 @@ jobs:
           docker stop taskflow-api 2>&1 || true
           docker rm taskflow-api 2>&1 || true
 
-  # ── Tag Stable: only after all CI + CD + smoke tests pass ──────────────────
+  # ── Tag Stable: only after CI + CD + smoke tests pass ────────────────────────
   tag-stable:
     name: Tag Stable
     runs-on: ubuntu-latest
-    needs: [cd]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.cd.result == 'success'
+    needs: [cd, smoke-test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.smoke-test.result == 'success'
     permissions:
       contents: read
       packages: write
@@ -316,7 +337,7 @@ jobs:
   notify:
     name: Telegram Notification
     runs-on: ubuntu-latest
-    needs: [ci, security, cd, tag-stable]
+    needs: [ci, security, cd, smoke-test, tag-stable]
     if: always()
 
     steps:

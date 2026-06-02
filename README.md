@@ -19,6 +19,49 @@ make build                    # compile binary
 ./bin/taskflow-api
 ```
 
+## Kubernetes Deployment (Week 12)
+
+Folder `kubernetes/` berisi manifest dasar untuk menjalankan TaskFlow di Kubernetes:
+
+| File | Keterangan |
+|------|------------|
+| `kubernetes/namespace-dev.yaml` | Namespace development: `taskflow-dev` |
+| `kubernetes/namespace-prod.yaml` | Namespace production: `taskflow-prod` |
+| `kubernetes/deployment.yaml` | Deployment `taskflow-api` dengan 2 replica dan rolling update |
+| `kubernetes/service.yaml` | Service `NodePort` pada port `30080` |
+
+Deploy ke cluster:
+
+```bash
+kubectl apply -f kubernetes/namespace-dev.yaml
+kubectl apply -f kubernetes/namespace-prod.yaml
+kubectl apply -f kubernetes/deployment.yaml -n taskflow-prod
+kubectl apply -f kubernetes/service.yaml -n taskflow-prod
+```
+
+Verifikasi:
+
+```bash
+kubectl get namespaces
+kubectl get all -n taskflow-prod
+kubectl get deployment taskflow-api -n taskflow-prod
+kubectl get service taskflow-api -n taskflow-prod
+```
+
+Untuk Minikube, akses aplikasi dengan:
+
+```bash
+curl http://$(minikube ip):30080
+```
+
+Untuk GKE, akses melalui external IP node jika firewall TCP `30080` sudah dibuka:
+
+```bash
+curl http://<NODE_EXTERNAL_IP>:30080
+```
+
+> Catatan: manifest awal memakai image placeholder `hashicorp/http-echo:latest` agar validasi Kubernetes mudah dilakukan. Pada tahap integrasi CI/CD, image ini akan diganti dengan image GHCR hasil pipeline GitHub Actions.
+
 ## Makefile Targets
 
 | Target | Keterangan |

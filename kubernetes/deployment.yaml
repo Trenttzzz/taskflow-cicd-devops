@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskflow-api
+  namespace: taskflow-prod
+  labels:
+    app: taskflow-api
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: taskflow-api
+  template:
+    metadata:
+      labels:
+        app: taskflow-api
+    spec:
+      containers:
+        - name: taskflow-api
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Halo dari TaskFlow v1!"
+            - "-listen=:8080"
+          ports:
+            - name: http
+              containerPort: 8080

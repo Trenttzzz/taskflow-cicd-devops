@@ -312,11 +312,51 @@ jobs:
           docker push ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:stable
           echo "✅ Tagged sha-${{ steps.vars.outputs.sha_short }} as stable"
 
+  # ── Deploy: update Kubernetes Deployment with the image built by CD ─────────
+  deploy-kubernetes:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: [cd]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: latest
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Update Kubernetes image
+        run: |
+          SHA_SHORT="${GITHUB_SHA::7}"
+          IMAGE="ghcr.io/${{ github.repository }}:sha-${SHA_SHORT}"
+          IMAGE=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+          echo "Deploy image: $IMAGE"
+          kubectl set image deployment/taskflow-api taskflow-api="$IMAGE" -n taskflow-prod
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/taskflow-api -n taskflow-prod --timeout=180s
+
+      - name: Verify deployment
+        run: |
+          kubectl get pods -n taskflow-prod
+          kubectl get deployment taskflow-api -n taskflow-prod -o jsonpath='{.spec.template.spec.containers[0].image}'
+          echo ""
+
   # ── Notification: Skenario 4 (Person 5) ──────────────────────────────────────
   notify:
     name: Telegram Notification
     runs-on: ubuntu-latest
-    needs: [ci, security, cd, tag-stable]
+    needs: [ci, security, cd, tag-stable, deploy-kubernetes]
     if: always()
 
     steps:

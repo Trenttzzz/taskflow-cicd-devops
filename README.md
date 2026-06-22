@@ -512,29 +512,3 @@ docs/insiden-1-selfhealing.md
 docs/insiden-2-rolling-update.md
 docs/insiden-3-rollback.md
 ```
-
-Catatan:
-
-- Workflow final terbaru tidak memakai job `deploy-kubernetes`.
-- Secret `GCP_SA_KEY` dan `KUBECONFIG_BASE64` tidak dibutuhkan untuk AI Failure Intelligence.
-- Dokumentasi ini dipertahankan sebagai konteks pembelajaran Kubernetes, bukan jalur utama final project terbaru.
-
-## Project Limitations
-
-Keterbatasan yang harus dibaca secara jujur:
-
-- Knowledge base awal baru 5 synthetic entries.
-- Evaluasi utama masih controlled local evaluation.
-- Belum memakai banyak real GitHub Actions failed runs.
-- OOVD-inspired filtering bukan OOVD model penuh dari paper.
-- Exact sign test hanya deskriptif karena dataset kecil.
-- Report usefulness dari anggota tim belum dinilai formal.
-
-## Next Work
-
-Prioritas berikutnya:
-
-1. Simpan artifact `ai-reports` dari live failure demo sebagai bukti final project.
-2. Buat `docs/refleksi-kelompok.md`.
-3. Siapkan `presentation/slides.pdf`.
-4. Tambahkan real failed logs ke `failure-knowledge-base/real-logs/` jika sudah ada run gagal nyata.

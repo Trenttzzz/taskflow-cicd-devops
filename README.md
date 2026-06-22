@@ -8,7 +8,7 @@ Fokus final project terbaru:
 - AI report hanya dibuat saat pipeline gagal.
 - GKE/Kubernetes tidak menjadi jalur utama workflow terbaru. Dokumentasi Kubernetes lama tetap dipertahankan sebagai dokumentasi legacy.
 - Retrieval failure memakai `gemini-embedding-2`.
-- Report diagnosis memakai `gemma-4-31b-it`.
+- Report diagnosis memakai `gemini-3.1-flash-lite`.
 - Satu secret `GEMINI_API_KEY` dipakai untuk embedding dan LLM.
 
 ## Final Project Summary
@@ -29,14 +29,14 @@ Alur ringkas:
 Pipeline success
   -> write success status
   -> no embedding call
-  -> no Gemma call
+  -> no LLM call
 
 Pipeline failure
   -> collect failed job logs
   -> clean and mask logs
   -> extract OOVD-inspired suspicious lines
   -> retrieve Top-3 similar failures
-  -> generate Gemma report
+  -> generate LLM report
   -> upload ai-reports artifact
   -> send Telegram failure summary
 ```
@@ -141,14 +141,14 @@ Expected output:
 
 ```text
 Pipeline succeeded. No AI failure analysis needed.
-Pipeline sukses. Embedding API dan Gemma API tidak dipanggil.
+Pipeline sukses. Embedding API dan LLM API tidak dipanggil.
 ```
 
 Makna:
 
 - `should_analyze=false`
 - call ke `gemini-embedding-2`: `0`
-- call ke `gemma-4-31b-it`: `0`
+- call ke `gemini-3.1-flash-lite`: `0`
 - tidak ada diagnosis AI karena pipeline sukses
 
 ### Failure Path Lokal
@@ -215,7 +215,7 @@ Untuk menjalankan workflow terbaru di GitHub Actions:
 
 | Secret | Wajib | Fungsi |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Ya untuk AI report | API key untuk `gemini-embedding-2` dan `gemma-4-31b-it`. |
+| `GEMINI_API_KEY` | Ya untuk AI report | API key untuk `gemini-embedding-2` dan `gemini-3.1-flash-lite`. |
 | `TELEGRAM_TOKEN` | Opsional | Token bot Telegram untuk notifikasi. |
 | `TELEGRAM_TO` | Opsional | Chat ID tujuan Telegram. |
 
@@ -252,7 +252,7 @@ Script utama:
 | `scripts/clean_failure_log.py` | Membersihkan log, masking secret, dan membuat OOVD-inspired suspicious lines. |
 | `scripts/build_embedding_index.py` | Membuat embedding index dari knowledge base. |
 | `scripts/retrieve_similar_failures.py` | Mengambil Top-3 similar failures dengan cosine similarity. |
-| `scripts/generate_failure_report.py` | Membuat Gemma report atau fallback report. |
+| `scripts/generate_failure_report.py` | Membuat LLM report atau fallback report. |
 | `scripts/evaluate_controlled_failures.py` | Mengukur retrieval pada controlled failure scenarios. |
 
 ## Model dan Alasan Desain
@@ -260,7 +260,7 @@ Script utama:
 | Fungsi | Model | Alasan |
 | --- | --- | --- |
 | Embedding retrieval | `gemini-embedding-2` | Cocok untuk semantic retrieval, tidak perlu model lokal, dan bisa memakai satu API key. |
-| LLM report | `gemma-4-31b-it` | Dipakai sebagai explanation layer untuk membuat report debugging berbasis evidence. |
+| LLM report | `gemini-3.1-flash-lite` | Dipakai sebagai explanation layer yang lebih reliable untuk demo setelah `gemma-4-31b-it` sempat mengembalikan 503/500 pada pengujian. |
 
 LLM tidak dijadikan classifier utama. Root cause candidate berasal dari:
 
@@ -269,7 +269,7 @@ LLM tidak dijadikan classifier utama. Root cause candidate berasal dari:
 - knowledge base notes,
 - OOVD-inspired suspicious lines.
 
-Keputusan ini mengurangi risiko hallucination karena Gemma tidak diminta menebak dari raw log kosong, tetapi menyusun laporan dari evidence yang sudah dipilih.
+Keputusan ini mengurangi risiko hallucination karena LLM tidak diminta menebak dari raw log kosong, tetapi menyusun laporan dari evidence yang sudah dipilih.
 
 ## Knowledge Base
 
@@ -383,6 +383,16 @@ Evaluasi terbaru:
 5 knowledge base entries
 768 embedding dimensions
 ```
+
+Live GitHub Actions failure demo juga sudah dilakukan dengan intentional coverage gate failure. Threshold sementara dinaikkan ke `101%`, total coverage aktual `78.9%`, dan sistem mengambil kategori `coverage-gate` sebagai Top-1 similar failure.
+
+| Live Demo Metric | Nilai |
+| --- | ---: |
+| Coverage aktual | 78.9% |
+| Threshold demo sementara | 101% |
+| Top-1 category | `coverage-gate` |
+| Top-1 similarity | 0.8329 |
+| AI report dibuat | Ya |
 
 Ringkasan:
 
@@ -524,8 +534,7 @@ Keterbatasan yang harus dibaca secara jujur:
 
 Prioritas berikutnya:
 
-1. Jalankan live failure demo di GitHub Actions setelah push atau pull request.
-2. Simpan artifact `ai-reports` sebagai bukti final project.
-3. Buat `docs/refleksi-kelompok.md`.
-4. Siapkan `presentation/slides.pdf`.
-5. Tambahkan real failed logs ke `failure-knowledge-base/real-logs/` jika sudah ada run gagal nyata.
+1. Simpan artifact `ai-reports` dari live failure demo sebagai bukti final project.
+2. Buat `docs/refleksi-kelompok.md`.
+3. Siapkan `presentation/slides.pdf`.
+4. Tambahkan real failed logs ke `failure-knowledge-base/real-logs/` jika sudah ada run gagal nyata.

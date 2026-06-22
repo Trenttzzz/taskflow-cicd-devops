@@ -2,9 +2,9 @@
 
 ## Ringkasan Hasil
 
-Evaluasi awal menunjukkan bahwa AI Failure Intelligence sudah bekerja untuk skenario coverage gate failure dan 15 repeated controlled failure scenarios. Sistem berhasil membedakan success path dan failure path. Pada success path, sistem tidak memanggil embedding API atau Gemma API. Pada failure path dengan `GEMINI_API_KEY`, sistem membuat embedding index, mengambil top-3 similar failures, dan menghasilkan report dari `gemma-4-31b-it`.
+Evaluasi awal menunjukkan bahwa AI Failure Intelligence sudah bekerja untuk skenario coverage gate failure, 15 repeated controlled failure scenarios, dan satu live GitHub Actions failure demo. Sistem berhasil membedakan success path dan failure path. Pada success path, sistem tidak memanggil embedding API atau LLM API. Pada failure path dengan `GEMINI_API_KEY`, sistem membuat embedding index, mengambil top-3 similar failures, dan menghasilkan report dari `gemini-3.1-flash-lite`.
 
-Untuk skenario coverage gate, retrieval berhasil menempatkan kategori yang benar sebagai rank 1. Similarity top-1 adalah 0.8830 untuk `synthetic-001-coverage-gate`. Report yang dihasilkan juga konsisten dengan evidence log, yaitu coverage 72.8 persen di bawah threshold 75 persen. Pada evaluasi 15 repeated controlled scenarios, mode `full_cleaned_log` menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15. Mode `oovd_focused_log` menghasilkan Top-1 accuracy 14/15 dan Top-3 accuracy 15/15.
+Untuk skenario coverage gate lokal, retrieval berhasil menempatkan kategori yang benar sebagai rank 1. Similarity top-1 adalah 0.8830 untuk `synthetic-001-coverage-gate`. Report yang dihasilkan juga konsisten dengan evidence log, yaitu coverage 72.8 persen di bawah threshold 75 persen. Pada evaluasi 15 repeated controlled scenarios, mode `full_cleaned_log` menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15. Mode `oovd_focused_log` menghasilkan Top-1 accuracy 14/15 dan Top-3 accuracy 15/15. Pada live GitHub Actions demo, coverage aktual 78.9 persen gagal terhadap threshold demo 101 persen, dan retrieval menempatkan `coverage-gate` sebagai Top-1 dengan similarity 0.8329.
 
 ## Apakah Enhancement Menjawab Gap?
 
@@ -26,7 +26,7 @@ Success path penting karena sistem tidak boleh memanggil AI secara berlebihan. H
 
 ```text
 Pipeline succeeded. No AI failure analysis needed.
-Pipeline sukses. Embedding API dan Gemma API tidak dipanggil.
+Pipeline sukses. Embedding API dan LLM API tidak dipanggil.
 ```
 
 Ini sesuai dengan keputusan desain. AI layer hanya aktif saat ada failure, sehingga biaya, latency, dan noise tetap terkendali.
@@ -36,7 +36,7 @@ Ini sesuai dengan keputusan desain. AI layer hanya aktif saat ada failure, sehin
 Failure path berhasil menjalankan seluruh alur inti:
 
 ```text
-failure status -> embedding index -> retrieval -> Gemma report
+failure status -> embedding index -> retrieval -> LLM report
 ```
 
 Retrieval juga masuk akal. Input log menunjukkan coverage di bawah threshold, dan top-1 result adalah `coverage-gate`. Rank 2 dan rank 3 memiliki similarity sekitar 0.70, tetapi kategorinya tidak tepat. Ini wajar karena knowledge base masih kecil dan semua synthetic logs berbagi konteks CI/CD. Dengan real logs dan lebih banyak kategori, pemisahan similarity diharapkan menjadi lebih jelas.
@@ -76,7 +76,7 @@ Hasil ini tidak menunjukkan improvement statistik dari OOVD-focused query. Hampi
 
 ## Analisis Report
 
-Report LLM tidak mengarang root cause di luar evidence. Report menyebut coverage 72.8 persen, threshold 75 persen, dan command test coverage yang relevan. Suggested debugging steps juga actionable.
+Report LLM tidak mengarang root cause di luar evidence. Pada controlled coverage failure, report menyebut coverage 72.8 persen, threshold 75 persen, dan command test coverage yang relevan. Pada live GitHub Actions demo, report menyebut coverage 78.9 persen di bawah threshold 101 persen dan menandai threshold tersebut sebagai misconfiguration. Suggested debugging steps juga actionable.
 
 Keterbatasannya adalah report masih bergantung pada cleaned log. Jika log collection dari GitHub Actions gagal atau log terlalu sedikit, report akan menjadi fallback atau menyatakan evidence belum cukup.
 
@@ -89,14 +89,14 @@ Keterbatasannya adalah report masih bergantung pada cleaned log. Jika log collec
 | Knowledge base | Tidak ada | Ada |
 | Root cause report | Tidak ada | Ada |
 | Evidence extraction | Manual | Otomatis dari cleaned log |
-| Debugging steps | Manual | Dibuat oleh Gemma berdasarkan evidence |
+| Debugging steps | Manual | Dibuat oleh LLM berdasarkan evidence |
 | AI call saat success | Tidak ada | 0 call |
 | Failure artifact | Raw logs saja | AI report dan similar failures JSON |
 | OOVD-style signal | Tidak ada | Ada, OOVD-inspired JSON |
 
 ## Keterbatasan Evaluasi
 
-Evaluasi saat ini masih terbatas pada local controlled failure. Lima belas skenario sudah terukur, tetapi semuanya masih controlled logs lokal. Requirement final project meminta evaluasi dengan data nyata, sehingga sebelum final demo sebaiknya dilakukan minimal tiga controlled failure di GitHub Actions.
+Evaluasi saat ini sudah mencakup local controlled failure dan satu live GitHub Actions failure demo. Lima belas skenario lokal mengukur stabilitas retrieval, sedangkan live demo membuktikan integrasi pipeline dan artifact `ai-reports` benar-benar berjalan di GitHub Actions. Namun jumlah live failure masih kecil, sehingga klaim produksi tetap harus dibatasi.
 
 Skenario yang disarankan:
 
@@ -106,7 +106,7 @@ Skenario yang disarankan:
 | PostgreSQL integration failure | Ubah `DATABASE_URL` pada branch test | integration-postgres |
 | Smoke test health failure | Ubah endpoint health sementara pada branch test | smoke-test-health |
 
-Setelah setiap run, simpan:
+Jika ingin memperkuat evaluasi lebih lanjut, lakukan dua live run tambahan dan simpan:
 
 - current failed log,
 - `similar-failures.json`,
@@ -116,4 +116,4 @@ Setelah setiap run, simpan:
 
 ## Kesimpulan Evaluasi
 
-MVP AI Failure Intelligence sudah berhasil. Sistem tidak memanggil AI saat success dan berhasil menghasilkan AI report saat failure dengan real API key. Retrieval pada 15 repeated controlled scenarios menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15 untuk full cleaned log. OOVD-inspired filtering juga menghasilkan sinyal tambahan yang dapat diperiksa, tetapi evaluasi menunjukkan mode tersebut lebih tepat dipakai sebagai pendukung report daripada pengganti query retrieval utama. Untuk memenuhi rubric final project secara kuat, evaluasi berikutnya perlu memakai GitHub Actions controlled failures agar klaim integrasi pipeline tidak hanya berbasis simulasi lokal.
+MVP AI Failure Intelligence sudah berhasil. Sistem tidak memanggil AI saat success dan berhasil menghasilkan AI report saat failure dengan real API key. Retrieval pada 15 repeated controlled scenarios menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15 untuk full cleaned log. Live GitHub Actions failure demo juga berhasil mengambil category `coverage-gate` sebagai Top-1 dengan similarity 0.8329. OOVD-inspired filtering menghasilkan sinyal tambahan yang dapat diperiksa, tetapi evaluasi menunjukkan mode tersebut lebih tepat dipakai sebagai pendukung report daripada pengganti query retrieval utama.

@@ -7,7 +7,7 @@ Enhancement yang dievaluasi adalah AI Failure Intelligence pada pipeline TaskFlo
 Model yang digunakan:
 
 - Embedding: `gemini-embedding-2`
-- LLM report: `gemma-4-31b-it`
+- LLM report: `gemini-3.1-flash-lite`
 
 ## Success Path
 
@@ -24,7 +24,7 @@ Output:
 
 ```text
 Pipeline succeeded. No AI failure analysis needed.
-Pipeline sukses. Embedding API dan Gemma API tidak dipanggil.
+Pipeline sukses. Embedding API dan LLM API tidak dipanggil.
 ```
 
 Hasil:
@@ -33,7 +33,7 @@ Hasil:
 | --- | ---: |
 | `should_analyze` | false |
 | Call ke `gemini-embedding-2` | 0 |
-| Call ke `gemma-4-31b-it` | 0 |
+| Call ke `gemini-3.1-flash-lite` | 0 |
 | Diagnosis report dibuat | Tidak |
 | Success status dibuat | Ya |
 
@@ -177,6 +177,31 @@ Suggested debugging steps:
 3. Tambahkan unit test sampai coverage minimal 75%.
 ```
 
+## Live GitHub Actions Failure Demo
+
+Live failure demo dilakukan dengan intentional coverage gate failure. Threshold coverage sementara dinaikkan menjadi 101 persen agar pipeline gagal secara terkontrol, lalu dikembalikan lagi ke threshold normal setelah bukti failure terkumpul.
+
+Ringkasan artifact `ai-reports` dari GitHub Actions:
+
+| Metrik | Nilai |
+| --- | ---: |
+| Failed job | `ci` |
+| Coverage aktual | 78.9% |
+| Threshold demo sementara | 101% |
+| Expected category | `coverage-gate` |
+| Top-1 category | `coverage-gate` |
+| Top-1 similarity | 0.8329 |
+| AI report dibuat | Ya |
+
+Evidence utama:
+
+```text
+Total coverage: 78.9%
+Coverage 78.9% is below 101%
+```
+
+Report menyimpulkan bahwa failure disebabkan oleh coverage gate misconfiguration karena threshold 101 persen tidak realistis. Ini sesuai dengan tujuan demo: membuktikan bahwa sistem dapat membaca failure log dari GitHub Actions, mengambil similar failure yang relevan, dan membuat debugging report berbasis evidence.
+
 ## Fallback Path Tanpa API Key
 
 Fallback path juga diuji dengan `GEMINI_API_KEY` kosong.
@@ -209,10 +234,10 @@ Evaluasi yang sudah selesai:
 - Top-1 dan Top-3 retrieval untuk 15 repeated controlled failure scenarios.
 - OOVD-inspired line extraction untuk 15 repeated controlled failure scenarios.
 - Perbandingan deskriptif full cleaned log vs OOVD-focused query dengan exact sign test terbatas.
+- Live GitHub Actions coverage gate failure demo dengan Top-1 category `coverage-gate`.
 
 Evaluasi yang belum selesai:
 
-- Controlled failure dari GitHub Actions live run.
 - Telegram failure summary live.
 - Diagnosis time manual dengan stopwatch.
 - Report usefulness score dari anggota tim.

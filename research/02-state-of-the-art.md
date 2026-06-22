@@ -47,7 +47,7 @@ Pipeline failure
   -> embed current failure with gemini-embedding-2
   -> compare with knowledge base embeddings
   -> retrieve top-3 similar failures
-  -> generate report with gemma-4-31b-it
+  -> generate report with gemini-3.1-flash-lite
 ```
 
 Sistem ini lebih kecil daripada arsitektur paper, tetapi langsung terintegrasi dengan pipeline GitHub Actions yang sudah ada. Fokusnya bukan meningkatkan predictive accuracy, melainkan meningkatkan feedback quality setelah failure.
@@ -58,7 +58,7 @@ Sistem ini lebih kecil daripada arsitektur paper, tetapi langsung terintegrasi d
 | --- | --- | --- | --- |
 | Input utama | GitHub Actions logs | Travis CI build outcomes | GitHub Actions failure logs |
 | Tujuan | Near-duplicate retrieval | Build failure prediction | Failure retrieval dan AI report |
-| Teknik utama | OOVD filtering, log similarity | LSTM-RNN, GA tuning | Gemini embedding, cosine similarity, Gemma report |
+| Teknik utama | OOVD filtering, log similarity | LSTM-RNN, GA tuning | Gemini embedding, cosine similarity, LLM report |
 | Evaluasi | precision@K, MAP@K | AUC, F1, accuracy | Top-1, Top-3, similarity, repeated controlled trials |
 | Kebutuhan data | Banyak failed dan passing logs | 91.330 builds | Knowledge base kecil dan bertahap |
 | Output | Similar build failures | Prediksi pass/fail | Debugging report berbasis evidence |

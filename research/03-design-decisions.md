@@ -40,9 +40,11 @@ Cosine similarity juga selaras dengan konsep similarity analysis pada Li et al. 
 
 ## Decision 6 - LLM Sebagai Explanation Layer
 
-Gemma `gemma-4-31b-it` tidak digunakan sebagai classifier utama. Root cause candidate berasal dari retrieved failures dan evidence log. LLM hanya menyusun summary, likely root cause, evidence, dan debugging steps.
+Model `gemini-3.1-flash-lite` tidak digunakan sebagai classifier utama. Root cause candidate berasal dari retrieved failures dan evidence log. LLM hanya menyusun summary, likely root cause, evidence, dan debugging steps.
 
 Keputusan ini mengurangi risiko hallucination. Prompt membatasi model agar tidak membuat root cause di luar evidence. Jika evidence tidak cukup, report harus menyatakan bahwa evidence belum cukup.
+
+Awalnya desain memakai `gemma-4-31b-it`, tetapi pengujian lokal dan GitHub Actions beberapa kali mendapat HTTP 503/500. Berdasarkan troubleshooting Gemini API, kondisi seperti ini dapat terjadi saat service sementara overloaded atau unavailable. Karena `gemini-embedding-2` tetap berhasil dengan API key yang sama, masalahnya bukan pada secret, melainkan reliabilitas model LLM saat demo. Untuk menjaga reproducibility final project, report generation dipindah ke `gemini-3.1-flash-lite`.
 
 ## Decision 7 - Synthetic Logs untuk Mengatasi Cold-Start
 

@@ -17,8 +17,8 @@ except ModuleNotFoundError:
 
 MODEL = "gemini-3.1-flash-lite"
 RETRYABLE_HTTP_CODES = {429, 500, 503, 504}
-MAX_GEMMA_ATTEMPTS = 5
-GEMMA_TIMEOUT_SECONDS = 180
+MAX_LLM_ATTEMPTS = 5
+LLM_TIMEOUT_SECONDS = 180
 REPORT_DIR = Path("ai-reports")
 STATUS_FILE = REPORT_DIR / "status.json"
 CLEAN_LOG_FILE = REPORT_DIR / "current-failure.cleaned.log"
@@ -206,7 +206,7 @@ Laporan fallback dibuat. {reason}
 
 ## Notes and Limits
 
-Report ini tidak memanggil Gemma karena fallback aktif.
+Report ini tidak memanggil LLM karena fallback aktif.
 """
 
 
@@ -251,14 +251,14 @@ Knowledge base notes:
 """
 
 
-def call_gemma(api_key, prompt):
+def call_llm(api_key, prompt):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1200},
     }
     last_error = None
-    for attempt in range(1, MAX_GEMMA_ATTEMPTS + 1):
+    for attempt in range(1, MAX_LLM_ATTEMPTS + 1):
         try:
             request = urllib.request.Request(
                 url,
@@ -266,30 +266,30 @@ def call_gemma(api_key, prompt):
                 headers={"Content-Type": "application/json", "x-goog-api-key": api_key},
                 method="POST",
             )
-            with urllib.request.urlopen(request, timeout=GEMMA_TIMEOUT_SECONDS) as response:
+            with urllib.request.urlopen(request, timeout=LLM_TIMEOUT_SECONDS) as response:
                 data = json.loads(response.read().decode("utf-8"))
             break
         except urllib.error.HTTPError as error:
             last_error = error
-            if error.code not in RETRYABLE_HTTP_CODES or attempt == MAX_GEMMA_ATTEMPTS:
+            if error.code not in RETRYABLE_HTTP_CODES or attempt == MAX_LLM_ATTEMPTS:
                 raise
             wait_seconds = attempt * 10
-            print(f"Gemma API mengembalikan HTTP {error.code}. Retry {attempt}/{MAX_GEMMA_ATTEMPTS} dalam {wait_seconds} detik.")
+            print(f"LLM API mengembalikan HTTP {error.code}. Retry {attempt}/{MAX_LLM_ATTEMPTS} dalam {wait_seconds} detik.")
             time.sleep(wait_seconds)
         except (urllib.error.URLError, TimeoutError) as error:
             last_error = error
-            if attempt == MAX_GEMMA_ATTEMPTS:
+            if attempt == MAX_LLM_ATTEMPTS:
                 raise
             wait_seconds = attempt * 10
-            print(f"Gemma API timeout/network error. Retry {attempt}/{MAX_GEMMA_ATTEMPTS} dalam {wait_seconds} detik.")
+            print(f"LLM API timeout/network error. Retry {attempt}/{MAX_LLM_ATTEMPTS} dalam {wait_seconds} detik.")
             time.sleep(wait_seconds)
     else:
-        raise last_error or TimeoutError("Gemma API request failed.")
+        raise last_error or TimeoutError("LLM API request failed.")
 
     parts = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
     text = "\n".join(part.get("text", "") for part in parts).strip()
     if not text:
-        raise ValueError("Gemma response did not include text.")
+        raise ValueError("LLM response did not include text.")
     return text
 
 
@@ -313,7 +313,7 @@ def main():
         success_file.write_text("Pipeline succeeded. No AI failure analysis needed.\n", encoding="utf-8")
         if REPORT_FILE.exists():
             REPORT_FILE.unlink()
-        print("Pipeline sukses. Embedding API dan Gemma API tidak dipanggil.")
+        print("Pipeline sukses. Embedding API dan LLM API tidak dipanggil.")
         return
 
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
@@ -327,16 +327,16 @@ def main():
 
     prompt = build_prompt(status, clean_log, similar, load_similar_notes(similar), oovd)
     try:
-        report = call_gemma(api_key, prompt)
+        report = call_llm(api_key, prompt)
     except (urllib.error.URLError, urllib.error.HTTPError, KeyError, json.JSONDecodeError, TimeoutError, ValueError) as error:
         error_reason = type(error).__name__
         if isinstance(error, urllib.error.HTTPError):
             error_reason = f"HTTP {error.code}"
         REPORT_FILE.write_text(
-            fallback_report(status, clean_log, similar, oovd, f"Gemma API gagal: {error_reason}."),
+            fallback_report(status, clean_log, similar, oovd, f"LLM API gagal: {error_reason}."),
             encoding="utf-8",
         )
-        print("Laporan fallback dibuat setelah Gemma API gagal.")
+        print("Laporan fallback dibuat setelah LLM API gagal.")
         return
 
     REPORT_FILE.write_text(normalize_report(mask_secrets(report)).rstrip() + "\n", encoding="utf-8")

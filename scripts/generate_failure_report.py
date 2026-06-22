@@ -15,9 +15,10 @@ except ModuleNotFoundError:
     from scripts.env_loader import load_dotenv
 
 
-MODEL = "gemma-4-31b-it"
+MODEL = "gemini-3.1-flash-lite"
 RETRYABLE_HTTP_CODES = {429, 500, 503, 504}
-MAX_GEMMA_ATTEMPTS = 3
+MAX_GEMMA_ATTEMPTS = 5
+GEMMA_TIMEOUT_SECONDS = 180
 REPORT_DIR = Path("ai-reports")
 STATUS_FILE = REPORT_DIR / "status.json"
 CLEAN_LOG_FILE = REPORT_DIR / "current-failure.cleaned.log"
@@ -74,6 +75,87 @@ def load_similar_notes(similar):
     return notes
 
 
+def compact_failure_log(clean_log):
+    patterns = [
+        r"failed job",
+        r"coverage",
+        r"total:",
+        r"total coverage",
+        r"is below",
+        r"exit code",
+        r"error",
+        r"panic",
+        r"timeout",
+        r"gosec",
+        r"govulncheck",
+        r"health",
+        r"stats",
+    ]
+    important = []
+    seen = set()
+    for line in clean_log.splitlines():
+        normalized = line.strip()
+        if not normalized:
+            continue
+        if not any(re.search(pattern, normalized, re.IGNORECASE) for pattern in patterns):
+            continue
+        if normalized in seen:
+            continue
+        important.append(normalized)
+        seen.add(normalized)
+    if not important:
+        important = clean_log.splitlines()[:120]
+    return "\n".join(important[:160])
+
+
+def infer_root_cause(clean_log):
+    coverage_match = re.search(r"Coverage\s+([0-9.]+)%\s+is below\s+([0-9.]+)%", clean_log, re.IGNORECASE)
+    if coverage_match:
+        current, threshold = coverage_match.groups()
+        return (
+            f"Pipeline gagal karena total coverage {current}% berada di bawah threshold {threshold}%.",
+            [
+                f"Coverage {current}% is below {threshold}%",
+                f"Total coverage: {current}%",
+            ],
+            [
+                "Jalankan `go test ./... -coverprofile=coverage.out -covermode=atomic` secara lokal.",
+                "Buka `go tool cover -func=coverage.out` untuk melihat package atau function dengan coverage rendah.",
+                "Tambahkan unit test pada branch logic yang belum tercakup, lalu push ulang setelah coverage melewati threshold.",
+            ],
+        )
+    if re.search(r"gosec|govulncheck|vulnerability", clean_log, re.IGNORECASE):
+        return (
+            "Pipeline gagal karena security scan menemukan finding blocking.",
+            ["Security scan menemukan finding pada log pipeline."],
+            [
+                "Buka artifact `gosec-report.json` atau `govulncheck-report.json`.",
+                "Perbaiki dependency vulnerable atau code pattern yang ditandai.",
+                "Jalankan ulang security scan sebelum push ulang.",
+            ],
+        )
+    if re.search(r"health|stats|curl", clean_log, re.IGNORECASE):
+        return (
+            "Pipeline gagal pada smoke test aplikasi.",
+            ["Smoke test endpoint health atau stats gagal."],
+            [
+                "Cek `docker logs taskflow-api` pada job CD.",
+                "Pastikan aplikasi bind ke port 8080 dan `DATABASE_URL` benar.",
+                "Uji `/health` dan `/api/v1/stats` secara lokal.",
+            ],
+        )
+    return (
+        "evidence belum cukup",
+        [],
+        [
+            "Baca failed step pada GitHub Actions.",
+            "Jalankan command yang gagal secara lokal bila memungkinkan.",
+            "Cek artifact scan, coverage, atau log container sesuai failed stage.",
+            "Perbaiki penyebab yang terlihat di evidence, lalu ulangi pipeline.",
+        ],
+    )
+
+
 def fallback_report(status, clean_log, similar, oovd, reason):
     top_k = similar.get("top_k", [])
     similar_lines = "\n".join(
@@ -85,7 +167,9 @@ def fallback_report(status, clean_log, similar, oovd, reason):
         for item in oovd.get("items", [])[:5]
     ) or "- Tidak tersedia."
     failed_jobs = ", ".join(status.get("failed_jobs", [])) or "Tidak diketahui."
-    excerpt = "\n".join(clean_log.splitlines()[:80]) or "Log tidak tersedia."
+    summary, evidence_lines, steps = infer_root_cause(clean_log)
+    evidence = "\n".join(f"- {line}" for line in evidence_lines) or f"```text\n{compact_failure_log(clean_log)}\n```"
+    step_lines = "\n".join(f"{index}. {step}" for index, step in enumerate(steps, start=1))
     return f"""# AI Failure Intelligence Report
 
 ## Status
@@ -98,7 +182,7 @@ Laporan fallback dibuat. {reason}
 
 ## Current Failure Summary
 
-Analisis LLM tidak tersedia. Gunakan cuplikan log dan failure serupa di bawah sebagai bukti awal.
+{summary}
 
 ## Most Similar Failures
 
@@ -106,13 +190,11 @@ Analisis LLM tidak tersedia. Gunakan cuplikan log dan failure serupa di bawah se
 
 ## Likely Root Cause
 
-evidence belum cukup
+{summary}
 
 ## Evidence
 
-```text
-{excerpt}
-```
+{evidence}
 
 ## OOVD-Inspired Signals
 
@@ -120,10 +202,7 @@ evidence belum cukup
 
 ## Suggested Debugging Steps
 
-1. Baca failed step pada GitHub Actions.
-2. Jalankan command yang gagal secara lokal bila memungkinkan.
-3. Cek artifact scan, coverage, atau log container sesuai failed stage.
-4. Perbaiki penyebab yang terlihat di evidence, lalu ulangi pipeline.
+{step_lines}
 
 ## Notes and Limits
 
@@ -158,7 +237,7 @@ Status pipeline:
 
 Current cleaned failure log:
 ```text
-{clean_log[:12000]}
+{compact_failure_log(clean_log)[:6000]}
 ```
 
 Similar failures:
@@ -176,25 +255,36 @@ def call_gemma(api_key, prompt):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 2048},
+        "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1200},
     }
-    request = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json", "x-goog-api-key": api_key},
-        method="POST",
-    )
+    last_error = None
     for attempt in range(1, MAX_GEMMA_ATTEMPTS + 1):
         try:
-            with urllib.request.urlopen(request, timeout=90) as response:
+            request = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json", "x-goog-api-key": api_key},
+                method="POST",
+            )
+            with urllib.request.urlopen(request, timeout=GEMMA_TIMEOUT_SECONDS) as response:
                 data = json.loads(response.read().decode("utf-8"))
             break
         except urllib.error.HTTPError as error:
+            last_error = error
             if error.code not in RETRYABLE_HTTP_CODES or attempt == MAX_GEMMA_ATTEMPTS:
                 raise
-            wait_seconds = attempt * 3
+            wait_seconds = attempt * 10
             print(f"Gemma API mengembalikan HTTP {error.code}. Retry {attempt}/{MAX_GEMMA_ATTEMPTS} dalam {wait_seconds} detik.")
             time.sleep(wait_seconds)
+        except (urllib.error.URLError, TimeoutError) as error:
+            last_error = error
+            if attempt == MAX_GEMMA_ATTEMPTS:
+                raise
+            wait_seconds = attempt * 10
+            print(f"Gemma API timeout/network error. Retry {attempt}/{MAX_GEMMA_ATTEMPTS} dalam {wait_seconds} detik.")
+            time.sleep(wait_seconds)
+    else:
+        raise last_error or TimeoutError("Gemma API request failed.")
 
     parts = data.get("candidates", [{}])[0].get("content", {}).get("parts", [])
     text = "\n".join(part.get("text", "") for part in parts).strip()

@@ -1,0 +1,78 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 8,
+      "score": 2,
+      "tokens": [
+        "buildx",
+        "failed"
+      ],
+      "line": "Error: buildx failed with: build failed"
+    },
+    {
+      "line_number": 2,
+      "score": 3,
+      "tokens": [
+        "builder",
+        "copy",
+        "internal"
+      ],
+      "line": "#11 [builder 5/6] COPY internal ./internal"
+    },
+    {
+      "line_number": 5,
+      "score": 4,
+      "tokens": [
+        "directory",
+        "found",
+        "not",
+        "stat"
+      ],
+      "line": "#12 0.214 stat /build/cmd/api: directory not found"
+    },
+    {
+      "line_number": 7,
+      "score": 5,
+      "tokens": [
+        "code",
+        "exited",
+        "failed",
+        "process",
+        "solve"
+      ],
+      "line": "ERROR: failed to solve: process exited with code 1"
+    },
+    {
+      "line_number": 4,
+      "score": 6,
+      "tokens": [
+        "amd64",
+        "builder",
+        "cgo_enabled",
+        "goarch",
+        "goos",
+        "linux"
+      ],
+      "line": "#12 [builder 6/6] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o taskflow-api ./cmd/api"
+    },
+    {
+      "line_number": 6,
+      "score": 11,
+      "tokens": [
+        "amd64",
+        "cgo_enabled",
+        "code",
+        "complete",
+        "did",
+        "goarch",
+        "goos",
+        "linux",
+        "not",
+        "process",
+        "successfully"
+      ],
+      "line": "#12 ERROR: process \"/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o taskflow-api ./cmd/api\" did not complete successfully: exit code: 1"
+    }
+  ]
+}

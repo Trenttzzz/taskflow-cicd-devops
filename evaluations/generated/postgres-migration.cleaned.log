@@ -1,0 +1,7 @@
+Run go test -tags=integration -race ./... -timeout 60s
+--- FAIL: TestPostgres_FullLifecycle (0.21s)
+    postgres_test.go:29: migrate gagal: ERROR: relation "tasks" does not exist (SQLSTATE 42P01)
+FAIL
+FAIL    github.com/taskflow/api/internal/repository  0.248s
+Migration failed before integration test could save task.
+Error: Process completed with exit code 1.

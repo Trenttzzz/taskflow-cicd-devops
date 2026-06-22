@@ -1,0 +1,53 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 2,
+      "score": 2,
+      "tokens": [
+        "fail",
+        "testpostgres_findbystatus_hanyatodo"
+      ],
+      "line": "--- FAIL: TestPostgres_FindByStatus_HanyaTodo (0.13s)"
+    },
+    {
+      "line_number": 1,
+      "score": 3,
+      "tokens": [
+        "integration",
+        "race",
+        "tags"
+      ],
+      "line": "Run go test -tags=integration -race ./... -timeout 60s"
+    },
+    {
+      "line_number": 6,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 3,
+      "score": 15,
+      "tokens": [
+        "authentication",
+        "connect",
+        "dapat",
+        "dijangkau",
+        "failed",
+        "fatal",
+        "for",
+        "gagal",
+        "host",
+        "konek",
+        "p01",
+        "password"
+      ],
+      "line": "    postgres_test.go:20: gagal konek ke postgres: database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`: server error (FATAL: password authentication failed for user \"taskflow\" (SQLSTATE 28P01))"
+    }
+  ]
+}

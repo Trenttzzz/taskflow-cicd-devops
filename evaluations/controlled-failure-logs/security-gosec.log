@@ -1,0 +1,7 @@
+Run gosec -severity high -confidence medium -fmt json -out gosec-report.json ./...
+Results:
+[/home/runner/work/taskflow/internal/repository/postgres.go:58] - G201: SQL string formatting may expose query injection risk
+Summary:
+  Gosec: 1 issues found
+Security scan found blocking findings. Check uploaded reports.
+Error: Process completed with exit code 1.

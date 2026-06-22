@@ -1,0 +1,5 @@
+Container stopped before readiness.
+Error: Process completed with exit code 1.
+Server failed to start within 30 seconds.
+curl: (7) Failed to connect to localhost port 8080 after 0 ms: Connection refused
+database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`

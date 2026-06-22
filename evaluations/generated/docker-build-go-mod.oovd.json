@@ -1,0 +1,65 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 2,
+      "score": 2,
+      "tokens": [
+        "builder",
+        "mod"
+      ],
+      "line": "#8 [builder 4/6] RUN go mod download"
+    },
+    {
+      "line_number": 6,
+      "score": 3,
+      "tokens": [
+        "buildx",
+        "failed",
+        "solve"
+      ],
+      "line": "Error: buildx failed with: ERROR: failed to solve"
+    },
+    {
+      "line_number": 3,
+      "score": 5,
+      "tokens": [
+        "entry",
+        "for",
+        "imports",
+        "missing",
+        "providing"
+      ],
+      "line": "#8 0.311 go: github.com/taskflow/api imports github.com/jackc/pgx/v5: missing go.sum entry for module providing package github.com/jackc/pgx/v5"
+    },
+    {
+      "line_number": 4,
+      "score": 7,
+      "tokens": [
+        "code",
+        "complete",
+        "did",
+        "mod",
+        "not",
+        "process",
+        "successfully"
+      ],
+      "line": "#8 ERROR: process \"/bin/sh -c go mod download\" did not complete successfully: exit code: 1"
+    },
+    {
+      "line_number": 5,
+      "score": 8,
+      "tokens": [
+        "complete",
+        "did",
+        "failed",
+        "mod",
+        "not",
+        "process",
+        "solve",
+        "successfully"
+      ],
+      "line": "ERROR: failed to solve: process \"/bin/sh -c go mod download\" did not complete successfully"
+    }
+  ]
+}

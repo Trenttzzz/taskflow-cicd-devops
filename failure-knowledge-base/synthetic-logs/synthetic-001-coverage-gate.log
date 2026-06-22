@@ -1,0 +1,8 @@
+Run go test ./... -coverprofile=coverage.out -covermode=atomic
+ok   github.com/taskflow/api/internal/handler      0.041s  coverage: 68.4% of statements
+ok   github.com/taskflow/api/internal/service      0.025s  coverage: 72.1% of statements
+ok   github.com/taskflow/api/internal/repository   0.033s  coverage: 81.0% of statements
+total:                                          (statements) 72.8%
+Total coverage: 72.8%
+Coverage 72.8% is below 75% (Rubric Requirement)
+Error: Process completed with exit code 1.

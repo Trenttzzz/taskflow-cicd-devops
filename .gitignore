@@ -16,6 +16,7 @@ go.work.sum
 
 # OS & editor
 .DS_Store
+*:Zone.Identifier
 .idea/
 .vscode/
 *.swp
@@ -35,3 +36,14 @@ govulncheck-report.json
 gosec-report.json
 gitleaks-report.json
 trivy-report.json
+
+# Python local cache
+__pycache__/
+*.pyc
+
+# Local AI failure intelligence artifacts
+ai-reports/*
+!ai-reports/.gitkeep
+failure-knowledge-base/embeddings/*
+!failure-knowledge-base/embeddings/.gitkeep
+!failure-knowledge-base/embeddings/embedding-index.json

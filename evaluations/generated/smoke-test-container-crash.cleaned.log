@@ -1,0 +1,7 @@
+Run curl -sf http://localhost:8080/health
+Attempt 1/30 - not ready yet
+Container stopped before readiness.
+panic: gagal membuat connection pool: invalid DATABASE_URL
+docker logs taskflow-api
+Server failed to start within 30 seconds.
+Error: Process completed with exit code 1.

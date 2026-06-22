@@ -1,0 +1,39 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 1,
+      "score": 3,
+      "tokens": [
+        "atomic",
+        "covermode",
+        "coverprofile"
+      ],
+      "line": "Run go test ./... -coverprofile=coverage.out -covermode=atomic"
+    },
+    {
+      "line_number": 9,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 8,
+      "score": 7,
+      "tokens": [
+        "adding",
+        "after",
+        "failed",
+        "gate",
+        "new",
+        "tests",
+        "without"
+      ],
+      "line": "Coverage gate failed after adding new service branch without tests."
+    }
+  ]
+}

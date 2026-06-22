@@ -1,0 +1,53 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 2,
+      "score": 2,
+      "tokens": [
+        "fail",
+        "testpostgres_fulllifecycle"
+      ],
+      "line": "--- FAIL: TestPostgres_FullLifecycle (10.00s)"
+    },
+    {
+      "line_number": 1,
+      "score": 3,
+      "tokens": [
+        "integration",
+        "race",
+        "tags"
+      ],
+      "line": "Run go test -tags=integration -race ./... -timeout 60s"
+    },
+    {
+      "line_number": 6,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 3,
+      "score": 13,
+      "tokens": [
+        "connect",
+        "connection",
+        "dapat",
+        "dial",
+        "dijangkau",
+        "failed",
+        "gagal",
+        "host",
+        "konek",
+        "refused",
+        "tcp",
+        "tidak"
+      ],
+      "line": "    postgres_test.go:27: gagal konek ke postgres: database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`: dial error (dial tcp 127.0.0.1:5432: connect: connection refused)"
+    }
+  ]
+}

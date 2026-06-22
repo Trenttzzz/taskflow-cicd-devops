@@ -1,0 +1,65 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 5,
+      "score": 3,
+      "tokens": [
+        "found",
+        "reachable",
+        "vulnerability"
+      ],
+      "line": "govulncheck-report.json: reachable vulnerability found in module golang.org/x/crypto"
+    },
+    {
+      "line_number": 6,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 4,
+      "score": 4,
+      "tokens": [
+        "confidence",
+        "detected",
+        "high",
+        "issue"
+      ],
+      "line": "gosec-report.json: HIGH confidence issue detected in package internal/handler"
+    },
+    {
+      "line_number": 2,
+      "score": 7,
+      "tokens": [
+        "confidence",
+        "fmt",
+        "gosec",
+        "high",
+        "medium",
+        "out",
+        "severity"
+      ],
+      "line": "Run gosec -severity high -confidence medium -fmt json -out gosec-report.json ./..."
+    },
+    {
+      "line_number": 3,
+      "score": 8,
+      "tokens": [
+        "blocking",
+        "check",
+        "findings",
+        "found",
+        "reports",
+        "scan",
+        "security",
+        "uploaded"
+      ],
+      "line": "Security scan found blocking findings. Check uploaded reports."
+    }
+  ]
+}

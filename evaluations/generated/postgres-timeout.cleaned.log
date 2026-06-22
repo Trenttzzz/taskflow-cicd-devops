@@ -1,0 +1,6 @@
+Run go test -tags=integration -race ./... -timeout 60s
+--- FAIL: TestPostgres_FullLifecycle (10.00s)
+    postgres_test.go:27: gagal konek ke postgres: database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`: dial error (dial tcp 127.0.0.1:5432: connect: connection refused)
+FAIL
+FAIL    github.com/taskflow/api/internal/repository  10.032s
+Error: Process completed with exit code 1.

@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "embedding_model": "gemini-embedding-2",
+  "embedding_output_dimensionality": 768,
+  "entries": [
+    {
+      "id": "synthetic-001-coverage-gate",
+      "source_type": "synthetic",
+      "category": "coverage-gate",
+      "failed_job": "ci",
+      "failed_step": "Coverage check",
+      "log_file": "synthetic-logs/synthetic-001-coverage-gate.log",
+      "note_file": "notes/synthetic-001-coverage-gate.md",
+      "validated": true,
+      "root_cause": "Total coverage turun di bawah batas minimal 75 persen.",
+      "resolution": "Tambahkan test untuk branch yang belum tercakup atau turunkan scope perubahan yang tidak diuji."
+    },
+    {
+      "id": "synthetic-002-docker-build",
+      "source_type": "synthetic",
+      "category": "docker-build",
+      "failed_job": "cd",
+      "failed_step": "Build and push Docker image",
+      "log_file": "synthetic-logs/synthetic-002-docker-build.log",
+      "note_file": "notes/synthetic-002-docker-build.md",
+      "validated": true,
+      "root_cause": "Docker build gagal karena path binary atau target build tidak sesuai.",
+      "resolution": "Verifikasi Dockerfile, target `./cmd/server`, dan output binary sebelum image dibuat."
+    },
+    {
+      "id": "synthetic-003-postgres-timeout",
+      "source_type": "synthetic",
+      "category": "integration-postgres",
+      "failed_job": "ci",
+      "failed_step": "Integration test",
+      "log_file": "synthetic-logs/synthetic-003-postgres-timeout.log",
+      "note_file": "notes/synthetic-003-postgres-timeout.md",
+      "validated": true,
+      "root_cause": "Integration test tidak bisa terhubung ke PostgreSQL service container sebelum timeout.",
+      "resolution": "Cek `DATABASE_URL`, health check PostgreSQL, port service, dan migrasi database."
+    },
+    {
+      "id": "synthetic-004-security-scan",
+      "source_type": "synthetic",
+      "category": "security-scan",
+      "failed_job": "security",
+      "failed_step": "Fail on security findings",
+      "log_file": "synthetic-logs/synthetic-004-security-scan.log",
+      "note_file": "notes/synthetic-004-security-scan.md",
+      "validated": true,
+      "root_cause": "Security scan menemukan vulnerability atau high-confidence finding yang memblokir pipeline.",
+      "resolution": "Baca artifact scan, upgrade dependency terdampak, atau perbaiki source yang dilaporkan."
+    },
+    {
+      "id": "synthetic-005-smoke-test-health",
+      "source_type": "synthetic",
+      "category": "smoke-test-health",
+      "failed_job": "cd",
+      "failed_step": "Smoke test /health",
+      "log_file": "synthetic-logs/synthetic-005-smoke-test-health.log",
+      "note_file": "notes/synthetic-005-smoke-test-health.md",
+      "validated": true,
+      "root_cause": "Container berjalan tetapi endpoint `/health` tidak mengembalikan HTTP 200.",
+      "resolution": "Periksa log container, binding port, `DATABASE_URL`, dan readiness aplikasi."
+    }
+  ]
+}

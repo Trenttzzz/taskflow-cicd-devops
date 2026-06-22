@@ -1,0 +1,6 @@
+Run curl -sf http://localhost:8080/api/v1/stats
+curl: (22) The requested URL returned error: 500
+Stats endpoint failed
+Container logs:
+query FindAll: database tidak dapat dijangkau: connection refused
+Error: Process completed with exit code 1.

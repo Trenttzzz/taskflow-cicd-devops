@@ -1,0 +1,60 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 3,
+      "score": 3,
+      "tokens": [
+        "before",
+        "readiness",
+        "stopped"
+      ],
+      "line": "Container stopped before readiness."
+    },
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 2,
+      "score": 4,
+      "tokens": [
+        "attempt",
+        "not",
+        "ready",
+        "yet"
+      ],
+      "line": "Attempt 1/30 - not ready yet"
+    },
+    {
+      "line_number": 6,
+      "score": 4,
+      "tokens": [
+        "failed",
+        "seconds",
+        "start",
+        "within"
+      ],
+      "line": "Server failed to start within 30 seconds."
+    },
+    {
+      "line_number": 4,
+      "score": 6,
+      "tokens": [
+        "connection",
+        "gagal",
+        "invalid",
+        "membuat",
+        "panic",
+        "pool"
+      ],
+      "line": "panic: gagal membuat connection pool: invalid DATABASE_URL"
+    }
+  ]
+}

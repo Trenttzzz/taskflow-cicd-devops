@@ -1,0 +1,5 @@
+#8 [builder 4/6] RUN go mod download
+Error: buildx failed with: ERROR: failed to solve
+#8 0.311 go: github.com/taskflow/api imports github.com/jackc/pgx/v5: missing go.sum entry for module providing package github.com/jackc/pgx/v5
+#8 ERROR: process "/bin/sh -c go mod download" did not complete successfully: exit code: 1
+ERROR: failed to solve: process "/bin/sh -c go mod download" did not complete successfully

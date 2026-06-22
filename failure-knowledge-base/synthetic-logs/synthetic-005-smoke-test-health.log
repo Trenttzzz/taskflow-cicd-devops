@@ -1,0 +1,8 @@
+Run curl -sf http://localhost:8080/health
+Testing /health endpoint...
+curl: (22) The requested URL returned error: 503
+Health check failed
+Container logs:
+database ping failed: context deadline exceeded
+server listening on :8080
+Error: Process completed with exit code 1.

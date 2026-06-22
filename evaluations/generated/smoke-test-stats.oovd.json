@@ -1,0 +1,49 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 3,
+      "score": 2,
+      "tokens": [
+        "endpoint",
+        "failed"
+      ],
+      "line": "Stats endpoint failed"
+    },
+    {
+      "line_number": 6,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 2,
+      "score": 4,
+      "tokens": [
+        "requested",
+        "returned",
+        "the",
+        "url"
+      ],
+      "line": "curl: (22) The requested URL returned error: 500"
+    },
+    {
+      "line_number": 5,
+      "score": 7,
+      "tokens": [
+        "connection",
+        "dapat",
+        "dijangkau",
+        "findall",
+        "query",
+        "refused",
+        "tidak"
+      ],
+      "line": "query FindAll: database tidak dapat dijangkau: connection refused"
+    }
+  ]
+}

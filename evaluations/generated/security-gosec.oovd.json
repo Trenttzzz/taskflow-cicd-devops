@@ -1,0 +1,70 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 5,
+      "score": 3,
+      "tokens": [
+        "found",
+        "gosec",
+        "issues"
+      ],
+      "line": "  Gosec: 1 issues found"
+    },
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 1,
+      "score": 7,
+      "tokens": [
+        "confidence",
+        "fmt",
+        "gosec",
+        "high",
+        "medium",
+        "out",
+        "severity"
+      ],
+      "line": "Run gosec -severity high -confidence medium -fmt json -out gosec-report.json ./..."
+    },
+    {
+      "line_number": 6,
+      "score": 8,
+      "tokens": [
+        "blocking",
+        "check",
+        "findings",
+        "found",
+        "reports",
+        "scan",
+        "security",
+        "uploaded"
+      ],
+      "line": "Security scan found blocking findings. Check uploaded reports."
+    },
+    {
+      "line_number": 3,
+      "score": 9,
+      "tokens": [
+        "expose",
+        "formatting",
+        "g201",
+        "injection",
+        "may",
+        "query",
+        "risk",
+        "sql",
+        "string"
+      ],
+      "line": "[/home/runner/work/taskflow/internal/repository/postgres.go:58] - G201: SQL string formatting may expose query injection risk"
+    }
+  ]
+}

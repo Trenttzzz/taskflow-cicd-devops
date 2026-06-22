@@ -1,0 +1,64 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 2,
+      "score": 2,
+      "tokens": [
+        "fail",
+        "testpostgres_fulllifecycle"
+      ],
+      "line": "--- FAIL: TestPostgres_FullLifecycle (0.21s)"
+    },
+    {
+      "line_number": 1,
+      "score": 3,
+      "tokens": [
+        "integration",
+        "race",
+        "tags"
+      ],
+      "line": "Run go test -tags=integration -race ./... -timeout 60s"
+    },
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 6,
+      "score": 7,
+      "tokens": [
+        "before",
+        "could",
+        "failed",
+        "integration",
+        "migration",
+        "save",
+        "task"
+      ],
+      "line": "Migration failed before integration test could save task."
+    },
+    {
+      "line_number": 3,
+      "score": 9,
+      "tokens": [
+        "does",
+        "exist",
+        "gagal",
+        "migrate",
+        "not",
+        "p01",
+        "relation",
+        "sqlstate",
+        "tasks"
+      ],
+      "line": "    postgres_test.go:29: migrate gagal: ERROR: relation \"tasks\" does not exist (SQLSTATE 42P01)"
+    }
+  ]
+}

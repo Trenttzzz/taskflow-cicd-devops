@@ -1,0 +1,7 @@
+Run curl -sf http://localhost:8080/health
+curl: (7) Failed to connect to localhost port 8080 after 0 ms: Connection refused
+Container stopped before readiness.
+docker logs taskflow-api
+database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`
+Server failed to start within 30 seconds.
+Error: Process completed with exit code 1.

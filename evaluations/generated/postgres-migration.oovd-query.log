@@ -1,0 +1,5 @@
+--- FAIL: TestPostgres_FullLifecycle (0.21s)
+Run go test -tags=integration -race ./... -timeout 60s
+Error: Process completed with exit code 1.
+Migration failed before integration test could save task.
+    postgres_test.go:29: migrate gagal: ERROR: relation "tasks" does not exist (SQLSTATE 42P01)

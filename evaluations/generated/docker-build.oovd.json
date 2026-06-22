@@ -1,0 +1,81 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 6,
+      "score": 2,
+      "tokens": [
+        "binary",
+        "compile"
+      ],
+      "line": "  15 |     # Compile binary"
+    },
+    {
+      "line_number": 11,
+      "score": 3,
+      "tokens": [
+        "buildx",
+        "failed",
+        "solve"
+      ],
+      "line": "Error: buildx failed with: ERROR: failed to solve"
+    },
+    {
+      "line_number": 10,
+      "score": 5,
+      "tokens": [
+        "code",
+        "exited",
+        "failed",
+        "process",
+        "solve"
+      ],
+      "line": "ERROR: failed to solve: process exited with code 1"
+    },
+    {
+      "line_number": 2,
+      "score": 6,
+      "tokens": [
+        "any",
+        "current",
+        "directory",
+        "found",
+        "not",
+        "parent"
+      ],
+      "line": "#12 3.421 go: go.mod file not found in current directory or any parent directory"
+    },
+    {
+      "line_number": 7,
+      "score": 6,
+      "tokens": [
+        "amd64",
+        "cgo_enabled",
+        "goarch",
+        "goos",
+        "ldflags",
+        "linux"
+      ],
+      "line": "  16 | >>> RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags=\"-w -s\" -o taskflow-api ./cmd/server"
+    },
+    {
+      "line_number": 3,
+      "score": 12,
+      "tokens": [
+        "amd64",
+        "cgo_enabled",
+        "code",
+        "complete",
+        "did",
+        "goarch",
+        "goos",
+        "ldflags",
+        "linux",
+        "not",
+        "process",
+        "successfully"
+      ],
+      "line": "#12 ERROR: process \"/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags=\\\"-w -s\\\" -o taskflow-api ./cmd/server\" did not complete successfully: exit code: 1"
+    }
+  ]
+}

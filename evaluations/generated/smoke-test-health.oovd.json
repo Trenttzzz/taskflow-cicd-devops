@@ -1,0 +1,63 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 3,
+      "score": 3,
+      "tokens": [
+        "before",
+        "readiness",
+        "stopped"
+      ],
+      "line": "Container stopped before readiness."
+    },
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 6,
+      "score": 4,
+      "tokens": [
+        "failed",
+        "seconds",
+        "start",
+        "within"
+      ],
+      "line": "Server failed to start within 30 seconds."
+    },
+    {
+      "line_number": 2,
+      "score": 6,
+      "tokens": [
+        "after",
+        "connect",
+        "connection",
+        "failed",
+        "port",
+        "refused"
+      ],
+      "line": "curl: (7) Failed to connect to localhost port 8080 after 0 ms: Connection refused"
+    },
+    {
+      "line_number": 5,
+      "score": 7,
+      "tokens": [
+        "connect",
+        "dapat",
+        "dijangkau",
+        "failed",
+        "host",
+        "tidak",
+        "user"
+      ],
+      "line": "database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Run go test -tags=integration -race ./... -timeout 60s
+--- FAIL: TestPostgres_FindByStatus_HanyaTodo (0.13s)
+    postgres_test.go:20: gagal konek ke postgres: database tidak dapat dijangkau: failed to connect to `host=localhost user=taskflow database=taskflow`: server error (FATAL: password authentication failed for user "taskflow" (SQLSTATE 28P01))
+FAIL
+FAIL    github.com/taskflow/api/internal/repository  0.176s
+Error: Process completed with exit code 1.

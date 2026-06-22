@@ -1,0 +1,4 @@
+Stats endpoint failed
+Error: Process completed with exit code 1.
+curl: (22) The requested URL returned error: 500
+query FindAll: database tidak dapat dijangkau: connection refused

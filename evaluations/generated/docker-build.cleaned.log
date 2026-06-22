@@ -1,0 +1,11 @@
+Run docker/build-push-action@v5
+#12 3.421 go: go.mod file not found in current directory or any parent directory
+#12 ERROR: process "/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags=\"-w -s\" -o taskflow-api ./cmd/server" did not complete successfully: exit code: 1
+Dockerfile:16
+--------------------
+  15 |     # Compile binary
+  16 | >>> RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o taskflow-api ./cmd/server
+  17 |
+--------------------
+ERROR: failed to solve: process exited with code 1
+Error: buildx failed with: ERROR: failed to solve

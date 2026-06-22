@@ -1,0 +1,7 @@
+Run go test -tags=integration -race ./... -timeout 60s
+--- FAIL: TestPostgresRepository_CreateTask (30.00s)
+    postgres_test.go:42: failed to connect to database: context deadline exceeded
+    postgres_test.go:42: connection error: dial tcp 127.0.0.1:5432: connect: connection refused
+FAIL
+FAIL    github.com/taskflow/api/internal/repository  30.112s
+Error: Process completed with exit code 1.

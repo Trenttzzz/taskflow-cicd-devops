@@ -1,0 +1,7 @@
+Run govulncheck -json ./... > govulncheck-report.json
+govulncheck: found reachable vulnerability
+Module: golang.org/x/crypto
+Package: golang.org/x/crypto/ssh
+Vulnerability: GO-2025-0001
+Security scan found blocking findings. Check uploaded reports.
+Error: Process completed with exit code 1.

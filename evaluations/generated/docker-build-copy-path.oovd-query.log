@@ -1,0 +1,6 @@
+Error: buildx failed with: build failed
+#11 [builder 5/6] COPY internal ./internal
+#12 0.214 stat /build/cmd/api: directory not found
+ERROR: failed to solve: process exited with code 1
+#12 [builder 6/6] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o taskflow-api ./cmd/api
+#12 ERROR: process "/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o taskflow-api ./cmd/api" did not complete successfully: exit code: 1

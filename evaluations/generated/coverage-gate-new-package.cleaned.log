@@ -1,0 +1,9 @@
+Run go test ./... -coverprofile=coverage.out -covermode=atomic
+ok   github.com/taskflow/api/internal/handler      0.044s  coverage: 76.4% of statements
+ok   github.com/taskflow/api/internal/service      0.029s  coverage: 69.6% of statements
+ok   github.com/taskflow/api/internal/repository   0.040s  coverage: 70.8% of statements
+total:                                          (statements) 73.6%
+Total coverage: 73.6%
+Coverage 73.6% is below 75%
+Coverage gate failed after adding new service branch without tests.
+Error: Process completed with exit code 1.

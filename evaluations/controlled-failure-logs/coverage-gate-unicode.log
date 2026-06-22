@@ -1,0 +1,8 @@
+Run go test ./... -coverprofile=coverage.out -covermode=atomic
+ok   github.com/taskflow/api/internal/validator    0.018s  coverage: 88.9% of statements
+ok   github.com/taskflow/api/internal/model        0.006s  coverage: 0.0% of statements
+ok   github.com/taskflow/api/internal/repository   0.051s  coverage: 73.0% of statements
+total:                                          (statements) 74.2%
+Total coverage: 74.2%
+Coverage 74.2% is below 75%
+Error: Process completed with exit code 1.

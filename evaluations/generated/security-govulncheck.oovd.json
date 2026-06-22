@@ -1,0 +1,41 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    },
+    {
+      "line_number": 2,
+      "score": 4,
+      "tokens": [
+        "found",
+        "govulncheck",
+        "reachable",
+        "vulnerability"
+      ],
+      "line": "govulncheck: found reachable vulnerability"
+    },
+    {
+      "line_number": 6,
+      "score": 8,
+      "tokens": [
+        "blocking",
+        "check",
+        "findings",
+        "found",
+        "reports",
+        "scan",
+        "security",
+        "uploaded"
+      ],
+      "line": "Security scan found blocking findings. Check uploaded reports."
+    }
+  ]
+}

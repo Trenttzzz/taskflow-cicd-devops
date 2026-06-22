@@ -1,0 +1,12 @@
+#14 [builder 7/7] RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o taskflow-api ./cmd/server
+#14 0.824 stat /build/cmd/server: directory not found
+#14 ERROR: process "/bin/sh -c CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags=\"-w -s\" -o taskflow-api ./cmd/server" did not complete successfully: exit code: 1
+Dockerfile:16
+--------------------
+  15 |     RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+  16 | >>>     go build \
+  17 | >>>     -ldflags="-w -s" \
+  18 | >>>     -o taskflow-api \
+  19 | >>>     ./cmd/server
+--------------------
+Error: buildx failed with: ERROR: failed to solve: process exited with code 1

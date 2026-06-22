@@ -1,0 +1,5 @@
+Container stopped before readiness.
+Error: Process completed with exit code 1.
+Attempt 1/30 - not ready yet
+Server failed to start within 30 seconds.
+panic: gagal membuat connection pool: invalid DATABASE_URL

@@ -10,7 +10,6 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  # ── CI: Vet, Test, and Coverage (Matrix Testing) ────────────────────────────
   ci:
     name: CI - Go ${{ matrix.go-version }}
     runs-on: ubuntu-latest
@@ -48,23 +47,8 @@ jobs:
       - name: go vet
         run: go vet ./...
 
-      - name: Unit test + race detector
+      - name: Unit test with race detector
         run: go test -race ./... -timeout 30s
-
-      - name: Build binary (compile check)
-        run: |
-          echo "Building binary to verify compilation..."
-          CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /tmp/taskflow-api ./cmd/server
-          echo "Binary compiled successfully"
-
-      - name: Check Go 1.21 compatibility note
-        if: matrix.go-version == '1.21'
-        run: |
-          echo "Checking if pattern routing is supported in Go 1.21..."
-          go build -o /dev/null ./cmd/server 2>&1 | grep -q "pattern" && echo "Pattern routing not supported (expected)" || echo "No pattern routing errors"
-          echo "ℹ️ Note: Go 1.21 uses legacy routing (no method matching)"
-          echo "Pattern routing (GET /path) is a Go 1.22+ feature"
-          echo "This code compiles but routing behavior differs from 1.22+"
 
       - name: Integration test
         env:
@@ -75,12 +59,12 @@ jobs:
         run: |
           go test ./... -coverprofile=coverage.out -covermode=atomic
           go tool cover -func=coverage.out
-          COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+          COVERAGE=$(go tool cover -func=coverage.out | awk '/total:/ {gsub("%","",$3); print $3}')
           echo "Total coverage: $COVERAGE%"
-          if (( $(echo "$COVERAGE < 75" | bc -l) )); then
-            echo "Coverage $COVERAGE% is below 75% (Rubric Requirement)"
+          awk -v coverage="$COVERAGE" 'BEGIN { exit !(coverage >= 101.0) }' || {
+            echo "Coverage $COVERAGE% is below 101%"
             exit 1
-          fi
+          }
           echo "Coverage $COVERAGE% meets requirement"
 
       - name: Upload coverage artifact
@@ -91,6 +75,7 @@ jobs:
 
       - name: Build binary
         run: |
+          mkdir -p bin
           CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o bin/taskflow-api ./cmd/server
 
       - name: Upload binary artifact
@@ -99,7 +84,6 @@ jobs:
           name: taskflow-api-binary-go-${{ matrix.go-version }}
           path: bin/taskflow-api
 
-  # Security: SCA and SAST reports
   security:
     name: Security Scan
     runs-on: ubuntu-latest
@@ -151,9 +135,8 @@ jobs:
           echo "Security scan found blocking findings. Check uploaded reports."
           exit 1
 
-  # ── CD: Build, Push, & Smoke Test (Post-Deployment Check) ────────────────────
   cd:
-    name: CD - Docker Build & Push
+    name: CD - Docker Build, Push, and Smoke Test
     runs-on: ubuntu-latest
     needs: [ci, security]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -189,11 +172,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set image name (lowercase)
+      - name: Set image name
         id: vars
         run: |
-          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "image_name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "image_name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -205,79 +188,59 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Output image tag
-        run: echo "Image pushed to ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}"
-
-      # ── Skenario 4: Deployment Smoke Test Lokal via Container ────────────────
-      - name: Pull and run image for Smoke Test
+      - name: Pull and run image for smoke test
         env:
           DATABASE_URL: postgres://taskflow:taskflow_secret@localhost:5432/taskflow?sslmode=disable
         run: |
-          echo "Pulling image..."
-          docker pull ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}
-          echo "Starting container..."
-          # Run WITHOUT --rm so we can inspect logs if it crashes
+          IMAGE="${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}"
+          docker pull "$IMAGE"
           docker run -d \
             --name taskflow-api \
             --network host \
             -e DATABASE_URL="$DATABASE_URL" \
             -e PORT=8080 \
-            ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}
-          echo "Container started, waiting 2s..."
+            "$IMAGE"
           sleep 2
-          echo "Container status:"
           docker ps -a
-          echo "Container logs (first 50 lines):"
           docker logs taskflow-api 2>&1 | head -50 || true
 
       - name: Wait for startup
         run: |
-          echo "Waiting for server to be ready (retrying for 30s)..."
           for i in {1..30}; do
             if curl -sf http://localhost:8080/health > /dev/null 2>&1; then
               echo "Server is ready after ${i} seconds"
               exit 0
             fi
-            echo "Attempt $i/30 - not ready yet..."
-            
-            # Check if container is still running
             if ! docker ps | grep -q taskflow-api; then
-              echo "Container crashed! Logs:"
+              echo "Container stopped before readiness."
               docker logs taskflow-api 2>&1 | tail -30 || true
               exit 1
             fi
-            
             docker logs taskflow-api --tail 3 2>&1 || true
             sleep 1
           done
-          echo "Server failed to start within 30 seconds"
-          echo "Final container logs:"
+          echo "Server failed to start within 30 seconds."
           docker logs taskflow-api 2>&1 || true
-          echo "Container status:"
           docker ps -a
           exit 1
 
       - name: Smoke test /health
         run: |
-          echo "Testing /health endpoint..."
-          curl -sf http://localhost:8080/health || (echo "Health check failed"; exit 1)
+          curl -sf http://localhost:8080/health
           echo "/health OK"
 
       - name: Smoke test /api/v1/stats
         run: |
-          echo "Testing /api/v1/stats endpoint..."
-          curl -sf http://localhost:8080/api/v1/stats || (echo "Stats endpoint failed"; exit 1)
+          curl -sf http://localhost:8080/api/v1/stats
           echo "/api/v1/stats OK"
 
       - name: Cleanup container
         if: always()
         run: |
-          echo "Container logs at cleanup:"
           docker logs taskflow-api 2>&1 || true
           docker stop taskflow-api 2>&1 || true
           docker rm taskflow-api 2>&1 || true
 
-  # ── Tag Stable: only after all CI + CD + smoke tests pass ──────────────────
   tag-stable:
     name: Tag Stable
     runs-on: ubuntu-latest
@@ -298,98 +261,168 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set image name (lowercase)
+      - name: Set image name
         id: vars
         run: |
-          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "image_name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "image_name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: Tag and push stable
         run: |
-          docker pull ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}
-          docker tag ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }} \
-            ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:stable
-          docker push ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:stable
-          echo "✅ Tagged sha-${{ steps.vars.outputs.sha_short }} as stable"
+          IMAGE="${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:sha-${{ steps.vars.outputs.sha_short }}"
+          STABLE_IMAGE="${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:stable"
+          docker pull "$IMAGE"
+          docker tag "$IMAGE" "$STABLE_IMAGE"
+          docker push "$STABLE_IMAGE"
+          echo "Tagged sha-${{ steps.vars.outputs.sha_short }} as stable"
 
-  # ── Deploy: update Kubernetes Deployment with the image built by CD ─────────
-  deploy-kubernetes:
-    name: Deploy to Kubernetes
+  failure-intelligence:
+    name: AI Failure Intelligence
     runs-on: ubuntu-latest
-    needs: [cd]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [ci, security, cd, tag-stable]
+    if: always()
     permissions:
+      actions: read
       contents: read
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          python-version: "3.11"
 
-      - name: Setup Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Check pipeline status
+        id: failure-status
+        env:
+          CI_RESULT: ${{ needs.ci.result }}
+          SECURITY_RESULT: ${{ needs.security.result }}
+          CD_RESULT: ${{ needs.cd.result }}
+          TAG_STABLE_RESULT: ${{ needs.tag-stable.result }}
+        run: python3 scripts/failure_status.py
+
+      - name: Collect failed job logs
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: python3 scripts/collect_failure_logs.py
+
+      - name: Clean failed job logs
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        run: python3 scripts/clean_failure_log.py
+
+      - name: Build embedding index
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/build_embedding_index.py
+
+      - name: Retrieve similar failures
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/retrieve_similar_failures.py --query ai-reports/current-failure.cleaned.log --top-k 3
+
+      - name: Generate failure report
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/generate_failure_report.py
+
+      - name: Upload AI reports
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          install_components: gke-gcloud-auth-plugin
+          name: ai-reports
+          path: ai-reports/
 
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: latest
-
-      - name: Configure kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > ~/.kube/config
-          chmod 600 ~/.kube/config
-
-      - name: Update Kubernetes image
-        run: |
-          SHA_SHORT="${GITHUB_SHA::7}"
-          IMAGE="ghcr.io/${{ github.repository }}:sha-${SHA_SHORT}"
-          IMAGE=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
-          echo "Deploy image: $IMAGE"
-          kubectl set image deployment/taskflow-api taskflow-api="$IMAGE" -n taskflow-prod
-
-      - name: Wait for rollout
-        run: |
-          kubectl rollout status deployment/taskflow-api -n taskflow-prod --timeout=180s
-
-      - name: Verify deployment
-        run: |
-          kubectl get pods -n taskflow-prod
-          kubectl get deployment taskflow-api -n taskflow-prod -o jsonpath='{.spec.template.spec.containers[0].image}'
-          echo ""
-
-  # ── Notification: Skenario 4 (Person 5) ──────────────────────────────────────
   notify:
     name: Telegram Notification
     runs-on: ubuntu-latest
-    needs: [ci, security, cd, tag-stable, deploy-kubernetes]
+    needs: [ci, security, cd, tag-stable, failure-intelligence]
     if: always()
 
     steps:
+      - name: Download AI report
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-reports
+          path: ai-reports
+
       - name: Notify Success
         if: ${{ !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
+        continue-on-error: true
         env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
           RAW_COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Pembaruan kode' }}
         run: |
-          TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
-          COMMIT_MSG=$(echo "$RAW_COMMIT_MSG" | head -n 1 | sed 's/"/\\"/g')
+          if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_TO" ]; then
+            echo "Telegram secrets are not configured."
+            exit 0
+          fi
+          export TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
+          python3 - <<'PY' > payload.json
+          import json
+          import os
+          commit_message = os.environ["RAW_COMMIT_MSG"].splitlines()[0][:200]
+          text = (
+              "TaskFlow Pipeline SUCCESS\n\n"
+              f"Waktu: {os.environ['TIME']}\n"
+              f"Branch: {os.environ['GITHUB_REF_NAME']}\n"
+              f"Commit: {os.environ['GITHUB_SHA']}\n"
+              f"Pesan: {commit_message}\n\n"
+              f"URL: {os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+          )
+          print(json.dumps({"chat_id": os.environ["TELEGRAM_TO"], "text": text}))
+          PY
           curl -s -X POST -H 'Content-Type: application/json' \
-            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "✅ *TaskFlow Pipeline SUCCESS*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Pesan:* '"$COMMIT_MSG"'\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-            https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
+            -d @payload.json \
+            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"
 
       - name: Notify Failure
         if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        continue-on-error: true
         env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TO: ${{ secrets.TELEGRAM_TO }}
           RAW_COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Pembaruan kode' }}
         run: |
-          TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
-          COMMIT_MSG=$(echo "$RAW_COMMIT_MSG" | head -n 1 | sed 's/"/\\"/g')
+          if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_TO" ]; then
+            echo "Telegram secrets are not configured."
+            exit 0
+          fi
+          export TIME=$(TZ='Asia/Jakarta' date +'%Y-%m-%d %H:%M:%S WIB')
+          python3 - <<'PY' > payload.json
+          import json
+          import os
+          from pathlib import Path
+
+          report_path = Path("ai-reports/failure-intelligence-report.md")
+          if report_path.exists():
+              report = report_path.read_text(encoding="utf-8", errors="replace")
+              summary = " ".join(line.strip() for line in report.splitlines() if line.strip() and not line.startswith("#"))
+              summary = summary[:700] or "AI failure report tersedia sebagai artifact."
+          else:
+              summary = "Pipeline failed. AI failure report unavailable. Check workflow logs."
+
+          commit_message = os.environ["RAW_COMMIT_MSG"].splitlines()[0][:200]
+          text = (
+              "TaskFlow Pipeline FAILED\n\n"
+              f"Waktu: {os.environ['TIME']}\n"
+              f"Branch: {os.environ['GITHUB_REF_NAME']}\n"
+              f"Commit: {os.environ['GITHUB_SHA']}\n"
+              f"Pesan: {commit_message}\n\n"
+              f"AI summary: {summary}\n\n"
+              f"URL: {os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/actions/runs/{os.environ['GITHUB_RUN_ID']}"
+          )
+          print(json.dumps({"chat_id": os.environ["TELEGRAM_TO"], "text": text}))
+          PY
           curl -s -X POST -H 'Content-Type: application/json' \
-            -d '{"chat_id": "${{ secrets.TELEGRAM_TO }}", "parse_mode": "Markdown", "text": "❌ *TaskFlow Pipeline FAILED*\n\n*Waktu:* '"$TIME"'\n*Branch:* ${{ github.ref_name }}\n*Commit:* ${{ github.sha }}\n*Pesan:* '"$COMMIT_MSG"'\n\n*URL:* ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-            https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
+            -d @payload.json \
+            "https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"

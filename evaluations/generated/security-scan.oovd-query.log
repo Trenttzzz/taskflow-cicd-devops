@@ -1,0 +1,5 @@
+govulncheck-report.json: reachable vulnerability found in module golang.org/x/crypto
+Error: Process completed with exit code 1.
+gosec-report.json: HIGH confidence issue detected in package internal/handler
+Run gosec -severity high -confidence medium -fmt json -out gosec-report.json ./...
+Security scan found blocking findings. Check uploaded reports.

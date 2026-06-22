@@ -1,0 +1,25 @@
+{
+  "description": "OOVD-inspired lines based on uncommon CI log tokens, not a trained OOVD model.",
+  "items": [
+    {
+      "line_number": 1,
+      "score": 3,
+      "tokens": [
+        "atomic",
+        "covermode",
+        "coverprofile"
+      ],
+      "line": "Run go test ./... -coverprofile=coverage.out -covermode=atomic"
+    },
+    {
+      "line_number": 7,
+      "score": 3,
+      "tokens": [
+        "code",
+        "completed",
+        "process"
+      ],
+      "line": "Error: Process completed with exit code 1."
+    }
+  ]
+}

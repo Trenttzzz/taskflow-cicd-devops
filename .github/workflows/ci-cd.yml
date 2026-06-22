@@ -57,21 +57,29 @@ jobs:
 
       - name: Coverage check
         run: |
-          go test ./... -coverprofile=coverage.out -covermode=atomic
-          go tool cover -func=coverage.out
-          COVERAGE=$(go tool cover -func=coverage.out | awk '/total:/ {gsub("%","",$3); print $3}')
-          echo "Total coverage: $COVERAGE%"
-          awk -v coverage="$COVERAGE" 'BEGIN { exit !(coverage >= 101.0) }' || {
-            echo "Coverage $COVERAGE% is below 101%"
-            exit 1
-          }
-          echo "Coverage $COVERAGE% meets requirement"
+          mkdir -p ci-logs
+          set -o pipefail
+          {
+            go test ./... -coverprofile=coverage.out -covermode=atomic
+            go tool cover -func=coverage.out
+            COVERAGE=$(go tool cover -func=coverage.out | awk '/total:/ {gsub("%","",$3); print $3}')
+            echo "Total coverage: $COVERAGE%"
+            awk -v coverage="$COVERAGE" 'BEGIN { exit !(coverage >= 101.0) }' || {
+              echo "Coverage $COVERAGE% is below 101%"
+              exit 1
+            }
+            echo "Coverage $COVERAGE% meets requirement"
+          } 2>&1 | tee "ci-logs/coverage-check-go-${{ matrix.go-version }}.log"
 
       - name: Upload coverage artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-go-${{ matrix.go-version }}
-          path: coverage.out
+          path: |
+            coverage.out
+            ci-logs/
+          if-no-files-found: ignore
 
       - name: Build binary
         run: |
@@ -310,6 +318,26 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_RUN_ID: ${{ github.run_id }}
         run: python3 scripts/collect_failure_logs.py
+
+      - name: Download failure context artifacts
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-report-go-*
+          path: failure-context
+          merge-multiple: true
+
+      - name: Append failure context artifacts
+        if: steps.failure-status.outputs.should_analyze == 'true'
+        run: |
+          if find failure-context -type f -name '*.log' | grep -q .; then
+            {
+              echo
+              echo "===== Failure context artifacts ====="
+              find failure-context -type f -name '*.log' -print -exec sed -n '1,220p' {} \;
+            } >> ai-reports/current-failure.log
+          fi
 
       - name: Clean failed job logs
         if: steps.failure-status.outputs.should_analyze == 'true'

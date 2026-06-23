@@ -2,24 +2,24 @@
   "summary": {
     "full_cleaned_log": {
       "scenario_count": 15,
-      "top_1_accuracy": 15,
-      "top_3_accuracy": 15,
-      "mean_reciprocal_rank": 1.0,
-      "mean_top_1_similarity": 0.8559
+      "top_1_accuracy": 0,
+      "top_3_accuracy": 0,
+      "mean_reciprocal_rank": 0.0,
+      "mean_top_1_similarity": 0.0
     },
     "oovd_focused_log": {
       "scenario_count": 15,
-      "top_1_accuracy": 14,
-      "top_3_accuracy": 15,
-      "mean_reciprocal_rank": 0.9667,
-      "mean_top_1_similarity": 0.8192
+      "top_1_accuracy": 0,
+      "top_3_accuracy": 0,
+      "mean_reciprocal_rank": 0.0,
+      "mean_top_1_similarity": 0.0
     }
   },
   "paired_comparison": {
     "top_1_correct": {
-      "full_cleaned_log_wins": 1,
+      "full_cleaned_log_wins": 0,
       "oovd_focused_log_wins": 0,
-      "ties": 14,
+      "ties": 15,
       "exact_sign_test_p_value": 1.0,
       "interpretation": "p-value is descriptive only; controlled dataset is small."
     },
@@ -38,72 +38,22 @@
       "oovd_line_count": 2,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.883,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.883,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.7099,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7091,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.7871,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7871,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.6917,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.6771,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -113,72 +63,22 @@
       "oovd_line_count": 2,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.8712,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.8712,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7349,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.7061,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.7871,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7871,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.6917,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.6771,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -188,72 +88,22 @@
       "oovd_line_count": 3,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.8907,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.8907,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.7289,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7267,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "coverage-gate",
-          "top_1_similarity": 0.8012,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.8012,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.689,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.6584,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -263,72 +113,22 @@
       "oovd_line_count": 6,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.8747,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.8747,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7161,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.7105,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.8639,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.8639,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.6995,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.6954,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -338,72 +138,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.7862,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.7862,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7322,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7246,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.7756,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.7756,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7112,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7011,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -413,72 +163,22 @@
       "oovd_line_count": 6,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.8777,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.8777,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.73,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7183,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "docker-build",
-          "top_1_similarity": 0.876,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.876,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7067,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.6822,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -488,72 +188,22 @@
       "oovd_line_count": 4,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.897,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.897,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.8032,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.773,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.8806,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.8806,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7727,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.766,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -563,72 +213,22 @@
       "oovd_line_count": 4,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.8817,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.8817,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.8003,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.756,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.8558,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.8558,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7595,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7537,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -638,72 +238,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.866,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.866,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7996,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7501,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.8374,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.8374,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7454,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7308,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -713,72 +263,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.8371,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.8371,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7318,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.6793,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.822,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.822,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7276,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.684,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -788,72 +288,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.8899,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.8899,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7458,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.731,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.8852,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.8852,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7473,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.738,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -863,72 +313,22 @@
       "oovd_line_count": 3,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.8025,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.8025,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7174,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.6757,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "security-scan",
-          "top_1_similarity": 0.8144,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.8144,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7224,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.684,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -938,72 +338,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "smoke-test-health",
-          "top_1_similarity": 0.8562,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.8562,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.8057,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.7527,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "smoke-test-health",
-          "top_1_similarity": 0.806,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.806,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7881,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.7285,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -1013,72 +363,22 @@
       "oovd_line_count": 4,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "smoke-test-health",
-          "top_1_similarity": 0.7938,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7938,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7572,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.7265,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "smoke-test-health",
-          "top_1_similarity": 0.7392,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7392,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7155,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-001-coverage-gate",
-              "category": "coverage-gate",
-              "source_type": "synthetic",
-              "similarity": 0.6956,
-              "note_file": "failure-knowledge-base/notes/synthetic-001-coverage-gate.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     },
@@ -1088,72 +388,22 @@
       "oovd_line_count": 5,
       "modes": {
         "full_cleaned_log": {
-          "top_1_category": "smoke-test-health",
-          "top_1_similarity": 0.8304,
-          "expected_rank": 1,
-          "reciprocal_rank": 1.0,
-          "top_1_correct": true,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.8304,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.796,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-002-docker-build",
-              "category": "docker-build",
-              "source_type": "synthetic",
-              "similarity": 0.7423,
-              "note_file": "failure-knowledge-base/notes/synthetic-002-docker-build.md"
-            }
-          ]
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
+          "top_1_correct": false,
+          "top_3_correct": false,
+          "top_k": []
         },
         "oovd_focused_log": {
-          "top_1_category": "integration-postgres",
-          "top_1_similarity": 0.7562,
-          "expected_rank": 2,
-          "reciprocal_rank": 0.5,
+          "top_1_category": null,
+          "top_1_similarity": null,
+          "expected_rank": null,
+          "reciprocal_rank": 0.0,
           "top_1_correct": false,
-          "top_3_correct": true,
-          "top_k": [
-            {
-              "rank": 1,
-              "id": "synthetic-003-postgres-timeout",
-              "category": "integration-postgres",
-              "source_type": "synthetic",
-              "similarity": 0.7562,
-              "note_file": "failure-knowledge-base/notes/synthetic-003-postgres-timeout.md"
-            },
-            {
-              "rank": 2,
-              "id": "synthetic-005-smoke-test-health",
-              "category": "smoke-test-health",
-              "source_type": "synthetic",
-              "similarity": 0.7358,
-              "note_file": "failure-knowledge-base/notes/synthetic-005-smoke-test-health.md"
-            },
-            {
-              "rank": 3,
-              "id": "synthetic-004-security-scan",
-              "category": "security-scan",
-              "source_type": "synthetic",
-              "similarity": 0.6929,
-              "note_file": "failure-knowledge-base/notes/synthetic-004-security-scan.md"
-            }
-          ]
+          "top_3_correct": false,
+          "top_k": []
         }
       }
     }

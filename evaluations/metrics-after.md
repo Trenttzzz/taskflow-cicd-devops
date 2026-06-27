@@ -202,6 +202,24 @@ Coverage 78.9% is below 101%
 
 Report menyimpulkan bahwa failure disebabkan oleh coverage gate misconfiguration karena threshold 101 persen tidak realistis. Ini sesuai dengan tujuan demo: membuktikan bahwa sistem dapat membaca failure log dari GitHub Actions, mengambil similar failure yang relevan, dan membuat debugging report berbasis evidence.
 
+## Automatic Failure Archive
+
+Implementasi terbaru menambahkan archive provisional ke branch `failure-history`. Archive dijalankan setelah retrieval dan report agar current failure tidak menjadi kandidat bagi dirinya sendiri.
+
+Local unit test membuktikan:
+
+| Quality Check | Hasil Lokal |
+| --- | --- |
+| Failure valid menghasilkan provisional entry | Lulus |
+| Duplicate sanitized log tidak menambah entry | Lulus |
+| Secret dimasking ulang sebelum disimpan | Lulus |
+| Success status ditolak | Lulus |
+| Corrupt metadata tidak ditimpa | Lulus |
+| Entry `validated: false` tidak masuk index | Lulus |
+| Entry real tervalidasi dan lengkap dapat dibaca index | Lulus |
+
+Hasil ini membuktikan logic archive secara lokal. Penulisan otomatis ke branch `failure-history` belum boleh diklaim berhasil di GitHub Actions sampai workflow terbaru dipush dan controlled failure dijalankan.
+
 ## Fallback Path Tanpa API Key
 
 Fallback path juga diuji dengan `GEMINI_API_KEY` kosong.
@@ -235,9 +253,11 @@ Evaluasi yang sudah selesai:
 - OOVD-inspired line extraction untuk 15 repeated controlled failure scenarios.
 - Perbandingan deskriptif full cleaned log vs OOVD-focused query dengan exact sign test terbatas.
 - Live GitHub Actions coverage gate failure demo dengan Top-1 category `coverage-gate`.
+- Unit test automatic archive, deduplication, secret masking, dan validation gate.
 
 Evaluasi yang belum selesai:
 
+- Live verification job `archive-failure` dan branch `failure-history`.
 - Telegram failure summary live.
 - Diagnosis time manual dengan stopwatch.
 - Report usefulness score dari anggota tim.

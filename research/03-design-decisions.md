@@ -50,7 +50,7 @@ Awalnya desain memakai `gemma-4-31b-it`, tetapi pengujian lokal dan GitHub Actio
 
 Saidani et al. (2022) menyoroti bahwa failed builds cenderung lebih sedikit dibanding passed builds. Dalam TaskFlow, real failed logs juga belum banyak. Karena itu synthetic validated logs dipakai untuk knowledge base awal.
 
-Synthetic logs tidak dianggap setara dengan real evidence. Metadata menyimpan `source_type: synthetic` dan `validated: true`. Ke depan, real failed GitHub Actions logs harus ditambahkan ke `failure-knowledge-base/real-logs/` agar grounding lebih kuat.
+Synthetic logs tidak dianggap setara dengan real evidence. Metadata menyimpan `source_type: synthetic` dan `validated: true`. Real failed GitHub Actions logs dikumpulkan terpisah pada branch `failure-history` agar data operasional tidak memenuhi history source code pada `main`.
 
 ## Decision 8 - AI Hanya Dipanggil Saat Failure
 
@@ -75,3 +75,11 @@ Berdasarkan Li et al. (2025), evaluasi utama retrieval memakai Top-K. Berdasarka
 - berapa overhead waktu AI layer.
 
 Evaluasi juga memakai repeated controlled trials agar setiap kategori diuji dengan beberapa variasi log, bukan satu contoh saja. Exact sign test hanya dipakai sebagai catatan deskriptif untuk membandingkan full cleaned log dan OOVD-focused query pada dataset kecil. Evaluasi ini lebih sesuai daripada AUC/F1 LSTM karena TaskFlow tidak membangun build prediction classifier.
+
+## Decision 11 - Automatic Archive dengan Manual Validation Gate
+
+Setiap failure baru diarsipkan setelah retrieval dan report selesai. Urutan ini mencegah current failure masuk index sebelum dibandingkan dengan historical knowledge. Sanitized log diberi ID berdasarkan GitHub run ID dan run attempt, sedangkan SHA-256 dipakai untuk mendeteksi duplicate content.
+
+Entry baru selalu memakai `source_type: real`, `category: unclassified`, dan `validated: false`. AI report tidak digunakan sebagai ground truth karena diagnosis baru dapat dikonfirmasi setelah developer memperbaiki failure. `build_embedding_index.py` hanya membaca real entry yang sudah tervalidasi, memiliki file lengkap, dan tidak lagi memakai nilai provisional.
+
+Branch `failure-history` dipilih sebagai persistent store ringan untuk scope final project. Pendekatan ini tidak menambah database atau dependency, dapat diaudit melalui Git history, dan memisahkan operational data dari source code `main`. Dalam production, penyimpanan ini lebih tepat dipindahkan ke object storage dan metadata database.

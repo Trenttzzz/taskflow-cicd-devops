@@ -233,7 +233,8 @@ flowchart TD
   D --> E["clean_failure_log.py"]
   E --> F["current-failure.cleaned.log"]
   E --> G["oovd-lines.json"]
-  H["failure-knowledge-base"] --> I["build_embedding_index.py"]
+  H["Synthetic validated knowledge"] --> I["build_embedding_index.py"]
+  N["Validated real history"] --> I
   F --> J["retrieve_similar_failures.py"]
   I --> J
   J --> K["similar-failures.json"]
@@ -241,6 +242,9 @@ flowchart TD
   G --> L
   K --> L
   L --> M["failure-intelligence-report.md"]
+  M --> O["archive_failure.py"]
+  F --> O
+  O --> P["failure-history branch, validated=false"]
 ```
 
 Script utama:
@@ -253,6 +257,7 @@ Script utama:
 | `scripts/build_embedding_index.py` | Membuat embedding index dari knowledge base. |
 | `scripts/retrieve_similar_failures.py` | Mengambil Top-3 similar failures dengan cosine similarity. |
 | `scripts/generate_failure_report.py` | Membuat LLM report atau fallback report. |
+| `scripts/archive_failure.py` | Menyimpan cleaned failure sebagai real history provisional dan mencegah duplikasi. |
 | `scripts/evaluate_controlled_failures.py` | Mengukur retrieval pada controlled failure scenarios. |
 
 ## Model dan Alasan Desain
@@ -273,15 +278,24 @@ Keputusan ini mengurangi risiko hallucination karena LLM tidak diminta menebak d
 
 ## Knowledge Base
 
-Folder:
+Knowledge base awal pada branch `main`:
 
 ```text
 failure-knowledge-base/
 ├── metadata.json
 ├── synthetic-logs/
-├── real-logs/
 ├── notes/
 └── embeddings/
+```
+
+Real failure history disimpan terpisah pada branch `failure-history`:
+
+```text
+metadata.json
+real-logs/
+└── real-<run-id>-attempt-<run-attempt>.cleaned.log
+notes/
+└── real-<run-id>-attempt-<run-attempt>.md
 ```
 
 Entry awal:
@@ -299,7 +313,20 @@ Alasan memakai synthetic validated logs:
 - Real failed GitHub Actions logs belum banyak.
 - Synthetic logs membantu cold-start retrieval.
 - Metadata tetap menandai `source_type: synthetic`, sehingga tidak diklaim sebagai data produksi.
-- Real logs bisa ditambahkan bertahap ke `failure-knowledge-base/real-logs/`.
+- Setiap failure baru diarsipkan otomatis ke branch `failure-history` setelah retrieval dan report selesai.
+
+Quality gate untuk real history:
+
+- hanya cleaned log yang masuk Git history;
+- masking secret dijalankan kembali sebelum penyimpanan;
+- SHA-256 sanitized log mencegah duplicate entry;
+- entry baru selalu `validated: false` dan `category: unclassified`;
+- hanya entry `validated: true` dengan root cause dan resolution nyata yang masuk embedding index;
+- archive dilakukan setelah retrieval agar current failure tidak menemukan dirinya sendiri.
+
+Branch `failure-history` dibuat otomatis pada failure pertama. `GITHUB_TOKEN`
+memerlukan permission `contents: write`, yang sudah dibatasi pada job
+`archive-failure`.
 
 ## OOVD-Inspired Filtering
 
@@ -431,6 +458,7 @@ Command yang dipakai untuk verifikasi lokal:
 
 ```bash
 python3 -m py_compile scripts/*.py
+python3 -m unittest discover -s tests -v
 python3 -m json.tool failure-knowledge-base/metadata.json >/dev/null
 python3 -m json.tool failure-knowledge-base/embeddings/embedding-index.json >/dev/null
 python3 -m json.tool evaluations/generated/descriptive-metrics.json >/dev/null
@@ -453,12 +481,13 @@ Cara demo yang disarankan:
 
 1. Buat branch khusus demo failure.
 2. Picu failure kecil yang mudah dikembalikan, misalnya menaikkan coverage threshold sementara atau membuat satu controlled test gagal.
-3. Push branch atau buka pull request.
+3. Push branch dan buka pull request menuju `main` atau `develop`.
 4. Buka workflow run di GitHub Actions.
 5. Cek job `failure-intelligence`.
-6. Download artifact `ai-reports`.
-7. Periksa `failure-intelligence-report.md` dan `similar-failures.json`.
-8. Revert perubahan pemicu failure sebelum merge.
+6. Pastikan job `archive-failure` membuat atau memperbarui branch `failure-history`.
+7. Download artifact `ai-reports`.
+8. Periksa `failure-intelligence-report.md`, `similar-failures.json`, dan provisional entry pada branch history.
+9. Revert perubahan pemicu failure sebelum merge.
 
 Jangan memasukkan API key ke source code. Gunakan GitHub Secret `GEMINI_API_KEY`.
 

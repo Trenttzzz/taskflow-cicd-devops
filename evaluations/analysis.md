@@ -93,10 +93,11 @@ Keterbatasannya adalah report masih bergantung pada cleaned log. Jika log collec
 | AI call saat success | Tidak ada | 0 call |
 | Failure artifact | Raw logs saja | AI report dan similar failures JSON |
 | OOVD-style signal | Tidak ada | Ada, OOVD-inspired JSON |
+| Historical failure archive | Tidak ada | Provisional sanitized entry dengan validation gate |
 
 ## Keterbatasan Evaluasi
 
-Evaluasi saat ini sudah mencakup local controlled failure dan satu live GitHub Actions failure demo. Lima belas skenario lokal mengukur stabilitas retrieval, sedangkan live demo membuktikan integrasi pipeline dan artifact `ai-reports` benar-benar berjalan di GitHub Actions. Namun jumlah live failure masih kecil, sehingga klaim produksi tetap harus dibatasi.
+Evaluasi saat ini sudah mencakup local controlled failure dan satu live GitHub Actions failure demo. Lima belas skenario lokal mengukur stabilitas retrieval, sedangkan live demo membuktikan integrasi pipeline dan artifact `ai-reports` benar-benar berjalan di GitHub Actions. Automatic archive sudah diuji dengan unit test, tetapi job `archive-failure` dan branch `failure-history` belum diverifikasi live setelah perubahan terbaru. Jumlah live failure juga masih kecil, sehingga klaim produksi tetap harus dibatasi.
 
 Skenario yang disarankan:
 
@@ -112,8 +113,9 @@ Jika ingin memperkuat evaluasi lebih lanjut, lakukan dua live run tambahan dan s
 - `similar-failures.json`,
 - `failure-intelligence-report.md`,
 - durasi job `failure-intelligence`,
+- provisional entry pada branch `failure-history`,
 - apakah top-1 dan top-3 sesuai.
 
 ## Kesimpulan Evaluasi
 
-MVP AI Failure Intelligence sudah berhasil. Sistem tidak memanggil AI saat success dan berhasil menghasilkan AI report saat failure dengan real API key. Retrieval pada 15 repeated controlled scenarios menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15 untuk full cleaned log. Live GitHub Actions failure demo juga berhasil mengambil category `coverage-gate` sebagai Top-1 dengan similarity 0.8329. OOVD-inspired filtering menghasilkan sinyal tambahan yang dapat diperiksa, tetapi evaluasi menunjukkan mode tersebut lebih tepat dipakai sebagai pendukung report daripada pengganti query retrieval utama.
+MVP AI Failure Intelligence sudah berhasil. Sistem tidak memanggil AI saat success dan berhasil menghasilkan AI report saat failure dengan real API key. Retrieval pada 15 repeated controlled scenarios menghasilkan Top-1 accuracy 15/15 dan Top-3 accuracy 15/15 untuk full cleaned log. Live GitHub Actions failure demo juga berhasil mengambil category `coverage-gate` sebagai Top-1 dengan similarity 0.8329. OOVD-inspired filtering lebih tepat dipakai sebagai pendukung report daripada pengganti query retrieval utama. Automatic archive menambahkan jalur pertumbuhan real history dengan deduplication dan manual validation gate, tetapi integrasi branch tersebut masih memerlukan satu live verification.

@@ -44,6 +44,7 @@ __pycache__/
 # Local AI failure intelligence artifacts
 ai-reports/*
 !ai-reports/.gitkeep
+failure-history/
 failure-knowledge-base/embeddings/*
 !failure-knowledge-base/embeddings/.gitkeep
 !failure-knowledge-base/embeddings/embedding-index.json

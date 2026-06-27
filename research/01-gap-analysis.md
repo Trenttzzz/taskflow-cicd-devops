@@ -52,7 +52,7 @@ Pada tahap implementasi saat ini, TaskFlow sudah memiliki synthetic validated lo
 - security scan,
 - smoke test health.
 
-Namun real failed GitHub Actions logs belum dimasukkan ke knowledge base. Ini menjadi gap lanjutan yang perlu ditutup sebelum final demo jika ingin evaluasi lebih kuat.
+Implementasi terbaru menutup gap pengumpulan dengan mengarsipkan cleaned failure log secara otomatis ke branch `failure-history`. Entry baru tetap provisional dengan `validated: false`, sehingga belum masuk embedding index sampai developer mengonfirmasi category, root cause, dan resolution. Live verification branch archive tetap perlu dilakukan setelah workflow terbaru dijalankan di GitHub Actions.
 
 ## Gap Evaluasi
 
@@ -70,4 +70,3 @@ Metrik tersebut mengikuti arah evaluasi Li et al. (2025), khususnya Top-K retrie
 ## Pernyataan Gap Final
 
 Pipeline TaskFlow membutuhkan AI Failure Intelligence karena status failure saja tidak cukup untuk mempercepat debugging. Berdasarkan Li et al. (2025), near-duplicate build failure dapat ditemukan dari log similarity analysis. Berdasarkan Saidani et al. (2022), histori CI/CD dapat dimanfaatkan untuk automation berbasis AI. Proyek ini menggabungkan kedua insight tersebut menjadi sistem practical: cleaned failure log diubah menjadi embedding, dibandingkan dengan failure knowledge base, lalu LLM membuat report root cause dan debugging steps berbasis evidence.
-

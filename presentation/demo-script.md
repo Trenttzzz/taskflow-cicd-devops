@@ -114,11 +114,13 @@ Dokumen ini berisi panduan praktis bagi presenter untuk mendemonstrasikan sistem
    git commit -m "demo: trigger intentional coverage gate failure"
    git push origin demo/intentional-failure
    ```
-4. Buka browser ke halaman GitHub Actions repository Anda.
+4. Buka pull request dari `demo/intentional-failure` menuju `main` atau `develop`. Push branch saja tidak memicu workflow karena trigger dibatasi pada dua target tersebut.
+5. Buka browser ke halaman GitHub Actions repository Anda.
    * Tunjukkan bahwa job `ci` gagal karena coverage aktual (78.9%) kurang dari 101%.
    * Tunjukkan bahwa job `failure-intelligence` langsung aktif berjalan.
+   * Tunjukkan bahwa job `archive-failure` membuat provisional entry pada branch `failure-history`.
    * Setelah selesai, tunjukkan tab **Artifacts** di run summary, lalu unduh dan buka berkas `failure-intelligence-report.md`.
-5. **Revert Perubahan** setelah presentasi agar branch tetap bersih:
+6. Tutup pull request tanpa merge, lalu hapus branch demo:
    ```bash
    git checkout main
    git branch -D demo/intentional-failure
@@ -127,6 +129,8 @@ Dokumen ini berisi panduan praktis bagi presenter untuk mendemonstrasikan sistem
 
 ### **Penjelasan Presenter ke Audiens**:
 > *"Kami memicu kegagalan live di runner GitHub Actions dengan menetapkan threshold coverage ke 101%. Job `ci` langsung gagal secara otomatis. Job AI Failure Intelligence kami mendeteksi kegagalan tersebut, mengunduh log GHA secara real-time, membersihkannya, dan mencocokkannya ke database kegagalan dengan nilai similarity **0.8329**. Artifact laporan Markdown langsung tersedia di halaman GitHub Actions untuk diunduh developer."*
+
+> *"Setelah report selesai, job archive menyimpan cleaned log ke branch `failure-history` sebagai entry provisional. SHA-256 mencegah duplikasi, sedangkan `validated: false` memastikan diagnosis yang belum dikonfirmasi tidak masuk kembali ke embedding index."*
 
 ---
 

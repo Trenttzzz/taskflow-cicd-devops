@@ -19,6 +19,25 @@
       "validated": false,
       "root_cause": "Menunggu validasi.",
       "resolution": "Menunggu validasi."
+    },
+    {
+      "id": "real-28281932789-attempt-1",
+      "source_type": "real",
+      "run_id": "28281932789",
+      "run_attempt": "1",
+      "commit_sha": "5a6c5b39c7c7e1088d9cbd6deae77ca29579a5e5",
+      "repository": "Trenttzzz/taskflow-cicd-devops",
+      "run_url": "https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281932789",
+      "failed_jobs": [
+        "ci"
+      ],
+      "category": "unclassified",
+      "log_file": "real-logs/real-28281932789-attempt-1.cleaned.log",
+      "note_file": "notes/real-28281932789-attempt-1.md",
+      "content_sha256": "0aef6b9ca42f231b09709c9506554c8d06bdc6ea2e797ba6cf8bdc36c388e18a",
+      "validated": false,
+      "root_cause": "Menunggu validasi.",
+      "resolution": "Menunggu validasi."
     }
   ]
 }

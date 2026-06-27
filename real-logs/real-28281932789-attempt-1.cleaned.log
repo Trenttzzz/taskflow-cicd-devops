@@ -1,0 +1,15 @@
+===== Failed job: CI - Go 1.22 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281932789/job/83799187422
+Log download failed for job CI - Go 1.22: HTTPError.
+===== Failed job: CI - Go 1.21 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281932789/job/83799187430
+Log download failed for job CI - Go 1.21: HTTPError.
+===== Failed job: CI - Go 1.23 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281932789/job/83799187436
+Log download failed for job CI - Go 1.23: HTTPError.

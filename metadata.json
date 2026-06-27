@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "real-28281637281-attempt-1",
+      "source_type": "real",
+      "run_id": "28281637281",
+      "run_attempt": "1",
+      "commit_sha": "ba455b52bfa61801a8db79201fc46771961bea7c",
+      "repository": "Trenttzzz/taskflow-cicd-devops",
+      "run_url": "https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281637281",
+      "failed_jobs": [
+        "ci"
+      ],
+      "category": "unclassified",
+      "log_file": "real-logs/real-28281637281-attempt-1.cleaned.log",
+      "note_file": "notes/real-28281637281-attempt-1.md",
+      "content_sha256": "03afa88bf6e8b2172a65c04565c785da58f5c1854b7c6d4742d009e60afdcbfd",
+      "validated": false,
+      "root_cause": "Menunggu validasi.",
+      "resolution": "Menunggu validasi."
+    }
+  ]
+}

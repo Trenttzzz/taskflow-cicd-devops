@@ -1,0 +1,202 @@
+===== Failed job: CI - Go 1.22 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281637281/job/83798397020
+Log download failed for job CI - Go 1.22: HTTPError.
+===== Failed job: CI - Go 1.21 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281637281/job/83798397029
+Log download failed for job CI - Go 1.21: HTTPError.
+===== Failed job: CI - Go 1.23 =====
+status: completed
+conclusion: failure
+html_url: https://github.com/Trenttzzz/taskflow-cicd-devops/actions/runs/28281637281/job/83798397035
+Log download failed for job CI - Go 1.23: HTTPError.
+===== Failure context artifacts =====
+failure-context/ci-logs/coverage-check-go-1.22.log
+	github.com/taskflow/api/cmd/server		coverage: 0.0% of statements
+?   	github.com/taskflow/api/internal/model	[no test files]
+ok  	github.com/taskflow/api/internal/handler	0.039s	coverage: 79.0% of statements
+ok  	github.com/taskflow/api/internal/repository	0.008s	coverage: 94.8% of statements
+ok  	github.com/taskflow/api/internal/service	0.004s	coverage: 81.1% of statements
+ok  	github.com/taskflow/api/internal/validator	0.002s	coverage: 100.0% of statements
+github.com/taskflow/api/cmd/server/main.go:15:			main			0.0%
+github.com/taskflow/api/internal/handler/handler.go:23:		New			100.0%
+github.com/taskflow/api/internal/handler/handler.go:28:		RegisterRoutes		100.0%
+github.com/taskflow/api/internal/handler/handler.go:35:		Health			100.0%
+github.com/taskflow/api/internal/handler/handler.go:44:		ListTasks		87.5%
+github.com/taskflow/api/internal/handler/handler.go:61:		CreateTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:75:		GetTask			100.0%
+github.com/taskflow/api/internal/handler/handler.go:84:		UpdateTask		66.7%
+github.com/taskflow/api/internal/handler/handler.go:102:	DeleteTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:114:	GetStats		60.0%
+github.com/taskflow/api/internal/handler/handler.go:123:	writeJSON		75.0%
+github.com/taskflow/api/internal/handler/handler.go:131:	writeError		100.0%
+github.com/taskflow/api/internal/handler/handler.go:135:	decodeJSON		100.0%
+github.com/taskflow/api/internal/handler/handler.go:140:	tasksRoot		57.1%
+github.com/taskflow/api/internal/handler/handler.go:155:	taskByID		62.5%
+github.com/taskflow/api/internal/handler/handler.go:172:	method			60.0%
+github.com/taskflow/api/internal/handler/handler.go:182:	taskID			75.0%
+github.com/taskflow/api/internal/repository/memory.go:21:	NewMemoryRepository	100.0%
+github.com/taskflow/api/internal/repository/memory.go:25:	Save			100.0%
+github.com/taskflow/api/internal/repository/memory.go:32:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/memory.go:39:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/memory.go:53:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/memory.go:65:	Delete			100.0%
+github.com/taskflow/api/internal/repository/memory.go:75:	Count			100.0%
+github.com/taskflow/api/internal/repository/memory.go:81:	Close			100.0%
+github.com/taskflow/api/internal/repository/memory.go:84:	Clear			100.0%
+github.com/taskflow/api/internal/repository/memory.go:90:	String			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:34:	NewPostgresRepository	55.6%
+github.com/taskflow/api/internal/repository/postgres.go:50:	Migrate			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:69:	Save			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:86:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:102:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:118:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:131:	Delete			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:140:	Count			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:147:	Close			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:153:	TruncateForTest		66.7%
+github.com/taskflow/api/internal/repository/postgres.go:165:	scanTask		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:174:	collectTasks		100.0%
+github.com/taskflow/api/internal/service/service.go:20:		NewTaskService		100.0%
+github.com/taskflow/api/internal/service/service.go:25:		Create			85.7%
+github.com/taskflow/api/internal/service/service.go:57:		GetByID			83.3%
+github.com/taskflow/api/internal/service/service.go:69:		GetAll			80.0%
+github.com/taskflow/api/internal/service/service.go:80:		Update			72.7%
+github.com/taskflow/api/internal/service/service.go:116:	Delete			62.5%
+github.com/taskflow/api/internal/service/service.go:131:	GetStats		88.9%
+github.com/taskflow/api/internal/service/service.go:162:	CalculateCompletionRate	100.0%
+github.com/taskflow/api/internal/service/service.go:178:	generateID		100.0%
+github.com/taskflow/api/internal/validator/validator.go:10:	IsValidPriority		100.0%
+github.com/taskflow/api/internal/validator/validator.go:21:	IsValidStatus		100.0%
+github.com/taskflow/api/internal/validator/validator.go:31:	IsNotEmpty		100.0%
+github.com/taskflow/api/internal/validator/validator.go:36:	MaxLength		100.0%
+total:								(statements)		78.9%
+Total coverage: 78.9%
+Coverage 78.9% is below 101%
+failure-context/ci-logs/coverage-check-go-1.21.log
+	github.com/taskflow/api/cmd/server		coverage: 0.0% of statements
+?   	github.com/taskflow/api/internal/model	[no test files]
+ok  	github.com/taskflow/api/internal/handler	0.034s	coverage: 79.0% of statements
+ok  	github.com/taskflow/api/internal/repository	0.008s	coverage: 94.8% of statements
+ok  	github.com/taskflow/api/internal/service	0.005s	coverage: 81.1% of statements
+ok  	github.com/taskflow/api/internal/validator	0.002s	coverage: 100.0% of statements
+github.com/taskflow/api/cmd/server/main.go:15:			main			0.0%
+github.com/taskflow/api/internal/handler/handler.go:23:		New			100.0%
+github.com/taskflow/api/internal/handler/handler.go:28:		RegisterRoutes		100.0%
+github.com/taskflow/api/internal/handler/handler.go:35:		Health			100.0%
+github.com/taskflow/api/internal/handler/handler.go:44:		ListTasks		87.5%
+github.com/taskflow/api/internal/handler/handler.go:61:		CreateTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:75:		GetTask			100.0%
+github.com/taskflow/api/internal/handler/handler.go:84:		UpdateTask		66.7%
+github.com/taskflow/api/internal/handler/handler.go:102:	DeleteTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:114:	GetStats		60.0%
+github.com/taskflow/api/internal/handler/handler.go:123:	writeJSON		75.0%
+github.com/taskflow/api/internal/handler/handler.go:131:	writeError		100.0%
+github.com/taskflow/api/internal/handler/handler.go:135:	decodeJSON		100.0%
+github.com/taskflow/api/internal/handler/handler.go:140:	tasksRoot		57.1%
+github.com/taskflow/api/internal/handler/handler.go:155:	taskByID		62.5%
+github.com/taskflow/api/internal/handler/handler.go:172:	method			60.0%
+github.com/taskflow/api/internal/handler/handler.go:182:	taskID			75.0%
+github.com/taskflow/api/internal/repository/memory.go:21:	NewMemoryRepository	100.0%
+github.com/taskflow/api/internal/repository/memory.go:25:	Save			100.0%
+github.com/taskflow/api/internal/repository/memory.go:32:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/memory.go:39:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/memory.go:53:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/memory.go:65:	Delete			100.0%
+github.com/taskflow/api/internal/repository/memory.go:75:	Count			100.0%
+github.com/taskflow/api/internal/repository/memory.go:81:	Close			100.0%
+github.com/taskflow/api/internal/repository/memory.go:84:	Clear			100.0%
+github.com/taskflow/api/internal/repository/memory.go:90:	String			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:34:	NewPostgresRepository	55.6%
+github.com/taskflow/api/internal/repository/postgres.go:50:	Migrate			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:69:	Save			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:86:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:102:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:118:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:131:	Delete			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:140:	Count			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:147:	Close			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:153:	TruncateForTest		66.7%
+github.com/taskflow/api/internal/repository/postgres.go:165:	scanTask		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:174:	collectTasks		100.0%
+github.com/taskflow/api/internal/service/service.go:20:		NewTaskService		100.0%
+github.com/taskflow/api/internal/service/service.go:25:		Create			85.7%
+github.com/taskflow/api/internal/service/service.go:57:		GetByID			83.3%
+github.com/taskflow/api/internal/service/service.go:69:		GetAll			80.0%
+github.com/taskflow/api/internal/service/service.go:80:		Update			72.7%
+github.com/taskflow/api/internal/service/service.go:116:	Delete			62.5%
+github.com/taskflow/api/internal/service/service.go:131:	GetStats		88.9%
+github.com/taskflow/api/internal/service/service.go:162:	CalculateCompletionRate	100.0%
+github.com/taskflow/api/internal/service/service.go:178:	generateID		100.0%
+github.com/taskflow/api/internal/validator/validator.go:10:	IsValidPriority		100.0%
+github.com/taskflow/api/internal/validator/validator.go:21:	IsValidStatus		100.0%
+github.com/taskflow/api/internal/validator/validator.go:31:	IsNotEmpty		100.0%
+github.com/taskflow/api/internal/validator/validator.go:36:	MaxLength		100.0%
+total:								(statements)		78.9%
+Total coverage: 78.9%
+Coverage 78.9% is below 101%
+failure-context/ci-logs/coverage-check-go-1.23.log
+	github.com/taskflow/api/cmd/server		coverage: 0.0% of statements
+?   	github.com/taskflow/api/internal/model	[no test files]
+ok  	github.com/taskflow/api/internal/handler	0.035s	coverage: 79.0% of statements
+ok  	github.com/taskflow/api/internal/repository	0.005s	coverage: 94.8% of statements
+ok  	github.com/taskflow/api/internal/service	0.006s	coverage: 81.1% of statements
+ok  	github.com/taskflow/api/internal/validator	0.002s	coverage: 100.0% of statements
+github.com/taskflow/api/cmd/server/main.go:15:			main			0.0%
+github.com/taskflow/api/internal/handler/handler.go:23:		New			100.0%
+github.com/taskflow/api/internal/handler/handler.go:28:		RegisterRoutes		100.0%
+github.com/taskflow/api/internal/handler/handler.go:35:		Health			100.0%
+github.com/taskflow/api/internal/handler/handler.go:44:		ListTasks		87.5%
+github.com/taskflow/api/internal/handler/handler.go:61:		CreateTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:75:		GetTask			100.0%
+github.com/taskflow/api/internal/handler/handler.go:84:		UpdateTask		66.7%
+github.com/taskflow/api/internal/handler/handler.go:102:	DeleteTask		100.0%
+github.com/taskflow/api/internal/handler/handler.go:114:	GetStats		60.0%
+github.com/taskflow/api/internal/handler/handler.go:123:	writeJSON		75.0%
+github.com/taskflow/api/internal/handler/handler.go:131:	writeError		100.0%
+github.com/taskflow/api/internal/handler/handler.go:135:	decodeJSON		100.0%
+github.com/taskflow/api/internal/handler/handler.go:140:	tasksRoot		57.1%
+github.com/taskflow/api/internal/handler/handler.go:155:	taskByID		62.5%
+github.com/taskflow/api/internal/handler/handler.go:172:	method			60.0%
+github.com/taskflow/api/internal/handler/handler.go:182:	taskID			75.0%
+github.com/taskflow/api/internal/repository/memory.go:21:	NewMemoryRepository	100.0%
+github.com/taskflow/api/internal/repository/memory.go:25:	Save			100.0%
+github.com/taskflow/api/internal/repository/memory.go:32:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/memory.go:39:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/memory.go:53:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/memory.go:65:	Delete			100.0%
+github.com/taskflow/api/internal/repository/memory.go:75:	Count			100.0%
+github.com/taskflow/api/internal/repository/memory.go:81:	Close			100.0%
+github.com/taskflow/api/internal/repository/memory.go:84:	Clear			100.0%
+github.com/taskflow/api/internal/repository/memory.go:90:	String			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:34:	NewPostgresRepository	55.6%
+github.com/taskflow/api/internal/repository/postgres.go:50:	Migrate			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:69:	Save			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:86:	FindByID		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:102:	FindAll			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:118:	FindByStatus		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:131:	Delete			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:140:	Count			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:147:	Close			100.0%
+github.com/taskflow/api/internal/repository/postgres.go:153:	TruncateForTest		66.7%
+github.com/taskflow/api/internal/repository/postgres.go:165:	scanTask		100.0%
+github.com/taskflow/api/internal/repository/postgres.go:174:	collectTasks		100.0%
+github.com/taskflow/api/internal/service/service.go:20:		NewTaskService		100.0%
+github.com/taskflow/api/internal/service/service.go:25:		Create			85.7%
+github.com/taskflow/api/internal/service/service.go:57:		GetByID			83.3%
+github.com/taskflow/api/internal/service/service.go:69:		GetAll			80.0%
+github.com/taskflow/api/internal/service/service.go:80:		Update			72.7%
+github.com/taskflow/api/internal/service/service.go:116:	Delete			62.5%
+github.com/taskflow/api/internal/service/service.go:131:	GetStats		88.9%
+github.com/taskflow/api/internal/service/service.go:162:	CalculateCompletionRate	100.0%
+github.com/taskflow/api/internal/service/service.go:178:	generateID		100.0%
+github.com/taskflow/api/internal/validator/validator.go:10:	IsValidPriority		100.0%
+github.com/taskflow/api/internal/validator/validator.go:21:	IsValidStatus		100.0%
+github.com/taskflow/api/internal/validator/validator.go:31:	IsNotEmpty		100.0%
+github.com/taskflow/api/internal/validator/validator.go:36:	MaxLength		100.0%
+total:								(statements)		78.9%
+Total coverage: 78.9%
+Coverage 78.9% is below 101%

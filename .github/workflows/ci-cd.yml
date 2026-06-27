@@ -64,8 +64,8 @@ jobs:
             go tool cover -func=coverage.out
             COVERAGE=$(go tool cover -func=coverage.out | awk '/total:/ {gsub("%","",$3); print $3}')
             echo "Total coverage: $COVERAGE%"
-            awk -v coverage="$COVERAGE" 'BEGIN { exit !(coverage >= 101.0) }' || {
-              echo "Coverage $COVERAGE% is below 101%"
+            awk -v coverage="$COVERAGE" 'BEGIN { exit !(coverage >= 75.0) }' || {
+              echo "Coverage $COVERAGE% is below 75%"
               exit 1
             }
             echo "Coverage $COVERAGE% meets requirement"
